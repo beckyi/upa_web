@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--  2016-10-02 
+  작업자 : 최재은
+  개발 상황 : 완료 -->
+
+<mapper namespace="user">
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="uservo">
+		<![CDATA[
+		insert into users values(seq_users.nextval, #{name},#{id},#{password}, #{carrum},#{phonenum},#{image},#{status})
+		]]>
+	</insert>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="uservo" resultType="uservo">
+		<![CDATA[
+		select * from users where id=#{id } and password=#{password }
+		]]>
+	</select>	
+</mapper>

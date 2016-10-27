@@ -1,0 +1,50 @@
+@CHARSET "UTF-8";
+@import "bootstrap.min.css";
+
+.upa{
+    width: 1201px;
+}
+.userArea{
+    margin-top: 25px;
+}
+/* .userArea input[type=button]{
+	border: 1px solid gray;
+	width: 80px;
+	height: 50px;
+	text-align: center;
+} */
+#login{
+	    margin-top: 70px;
+}
+.loginM{
+	background:url("/upa/assets/images/user/login.png") no-repeat;
+}
+#loginc{
+    position: absolute;
+    right: 191px;
+    top: 29px;
+}
+#login_anchor{
+	background: white;
+    border: 1px solid white;
+}
+#signc{
+    position: absolute;
+    right: 87px;
+    top: 29px;
+}
+.move{
+    margin-top: 70px;
+    margin-left: -3px;
+}
+.server{
+	background-image: url("/upa/assets/images/database.png");
+}
+#nav_icon{
+	width:50px;
+}
+/*login modal css*/
+#login_logo{
+    margin-left: 161px;
+    margin-bottom: 35px;
+}
