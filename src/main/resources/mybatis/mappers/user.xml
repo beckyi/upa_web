@@ -9,14 +9,53 @@
 	<!-- 회원가입 -->
 	<insert id="insert" parameterType="uservo">
 		<![CDATA[
-		insert into users values(seq_users.nextval, #{name},#{id},#{password}, #{carrum},#{phonenum},#{image},#{status})
+		insert into users (name, id, password, carnum, phonenum, email, regdate, image) values (#{name},#{id},#{password}, #{carnum},#{phonenum},#{email}, now(),#{image})
 		]]>
 	</insert>
 	
 	<!-- 로그인 -->
 	<select id="login" parameterType="uservo" resultType="uservo">
 		<![CDATA[
-		select * from users where id=#{id } and password=#{password }
+		 select no, name, id, password, carnum, phonenum, regdate, image, status from users where id=#{id } and password=#{password }
 		]]>
-	</select>	
+	</select>
+	
+	<!-- 아이디 중복확인 -->
+	<select id="checkEmail" parameterType="string" resultType="long">
+	<![CDATA[
+		select no from users where id=#{id }
+	]]>
+	</select>
+	
+	<!-- 회원정보 수정 정보 가져오기 -->
+	<select id="getModify" parameterType="long" resultType="uservo">
+	<![CDATA[
+		select no, name, carnum, phonenum, email, image from users where no=#{no }
+	]]>
+	</select>
+	
+	<!-- 회원정보 수정 -->
+	<update id="update" parameterType= "uservo">
+		<choose>
+			<when test="#{password == ''}">
+			<![CDATA[
+				update users 
+					set phonenum = #{phonenum },
+					carnum = #{carnum },
+					email = #{email }
+					where no = #{no }
+			]]>
+			</when>
+			<otherwise>
+				<![CDATA[
+				update users 
+					set password = #{password },
+					carnum = #{carnum },
+					phonenum = #{phonenum },
+					email = #{email }
+					where no = #{no }
+			]]>
+			</otherwise>
+		</choose>
+	</update>
 </mapper>

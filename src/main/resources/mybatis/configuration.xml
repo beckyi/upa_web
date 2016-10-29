@@ -3,8 +3,10 @@
 <configuration>
 	<typeAliases>
 		<typeAlias type="kr.ac.sungkyul.upa.vo.UserVo" alias="uservo"/>
+		<typeAlias type="kr.ac.sungkyul.upa.vo.MapVo" alias="mapvo"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/mappers/user.xml" />
+		<mapper resource="mybatis/mappers/map.xml" />
 	</mappers>
 </configuration>

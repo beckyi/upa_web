@@ -1,13 +1,24 @@
 package kr.ac.sungkyul.upa.vo;
 
 public class UserVo {
+	private Long no;
+	private String name;
 	private String id;
 	private String password;
 	private String carnum;
 	private String phonenum;
+	private String email;
 	private String regdate;
 	private String image;
 	private String status;
+	
+	
+	public Long getNo() {
+		return no;
+	}
+	public void setNo(Long no) {
+		this.no = no;
+	}
 	public String getId() {
 		return id;
 	}
@@ -44,10 +55,29 @@ public class UserVo {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getRegdate() {
+		return regdate;
+	}
+	public void setRegdate(String regdate) {
+		this.regdate = regdate;
+	}
 	
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
 	@Override
 	public String toString() {
-		return "UserDao [id=" + id + ", password=" + password + ", carnum=" + carnum + ", phonenum=" + phonenum
-				+ ", image=" + image + ", status=" + status + "]";
+		return "UserVo [no=" + no + ", name=" + name + ", id=" + id + ", password=" + password + ", carnum=" + carnum
+				+ ", phonenum=" + phonenum + ", email=" + email + ", regdate=" + regdate + ", image=" + image
+				+ ", status=" + status + "]";
 	}
 }

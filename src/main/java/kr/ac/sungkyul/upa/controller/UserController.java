@@ -1,13 +1,18 @@
 package kr.ac.sungkyul.upa.controller;
 
+import java.util.Map;
+
 //import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import kr.ac.sungkyul.upa.service.UserService;
 import kr.ac.sungkyul.upa.vo.UserVo;
@@ -19,28 +24,43 @@ public class UserController {
 	@Autowired
 	UserService userservice;
 
+	@RequestMapping("/text")
+	public String text(){
+		return "user/text";
+	}
+	
 	@RequestMapping("/joinform")
 	public String joinform(){
 		return "user/joinform";
 	}
-//	
-//	@RequestMapping("/join")
-//	public String join(@ModelAttribute UserVo vo){
-//		System.out.println("join: "+vo.toString());
-//		userService.join(vo);
-//		return "redirect:/user/joinsuccess";
-//	}
-//	
-//	@RequestMapping("/joinsuccess")
-//	public String joinSuccess(){
-//		return "user/joinsuccess";
-//	}
-//	
-//	@RequestMapping("/loginform")
-//	public String loginform(){
-//		return "user/loginform";
-//	}
-//	
+	
+
+	@RequestMapping("/requestpark")
+	public String requestpark(){
+		return "user/requestPark";
+	}
+	
+	@RequestMapping("/join")
+	public String join(@ModelAttribute UserVo vo){
+		System.out.println("join: "+vo.toString());
+		userservice.join(vo);
+		return "redirect:/user/joinsuccess";
+	}
+	
+	@ResponseBody	// 아이디 중복 검사
+	@RequestMapping(value = "CheckEmail", method = RequestMethod.POST)
+	public Map<String, Object> checkEmail(String id) {	//Request 객체받음, script or DB 객체 분별
+		System.out.println(id);
+		
+		Map<String, Object> map = userservice.checkEmail(id);
+		return map;
+	}
+	
+	@RequestMapping("/joinsuccess")
+	public String joinSuccess(){
+		return "user/joinsuccess";
+	}
+
 	//1. Ajax 사용 시 - DB (로그인 정보 비교)
 	@ResponseBody
 	@RequestMapping(value = "checkLogin", method = RequestMethod.POST)
@@ -49,14 +69,13 @@ public class UserController {
 		System.out.println("controll "+id+" "+password);
 		
 		UserVo authUser =  userservice.login(id,  password);
-		System.out.println(authUser.toString());
+		System.out.println(authUser);
 		
 		String result = "true";
 		
 		if(authUser == null){
 			result = "false";
-		}
-		else {
+		} else {
 			//인증성공
 			session.setAttribute("authUser",authUser);
 			result = "true";
@@ -65,37 +84,46 @@ public class UserController {
 		
 	}
 	
-//	@RequestMapping("/logout")
-//	public String logout(HttpSession session){
-//		session.removeAttribute("authUser");
-//		session.invalidate();	//로그아웃 처리 시 세션을 지워줌
-//		
-//		return "redirect:/main";
-//	}
-//	
-//	@RequestMapping("/modifyform")
-//	public String modifyform(HttpSession session, Model model){
-//		UserVo temp = (UserVo)session.getAttribute("authUser");
-//		
-//		Long no = temp.getNo();
-//		
-//		UserVo nvo = userService.get(no);
-//		model.addAttribute("userVo", nvo);
-//		
-//		return "user/modifyform";
-//	}
-//	
-//	@RequestMapping("/modify")
-//	public String modify(HttpSession session, @ModelAttribute UserVo vo){
-//		
-//		UserVo temp = (UserVo)session.getAttribute("authUser");
-//		Long no = temp.getNo();
-//		
-//		vo.setNo(no);
-//		
-//		userService.update(vo);
-//		return "user/modifysuccess";
-//	}
+	@RequestMapping("/logout")
+	public String logout(HttpSession session){
+		session.removeAttribute("authUser");
+		session.invalidate();	//로그아웃 처리 시 세션을 지워줌
+		
+		return "redirect:/main";
+	}
+	
+	@RequestMapping("/modifyform")
+	public String modifyform(HttpSession session, Model model){
+		UserVo temp = (UserVo)session.getAttribute("authUser");
+		
+		Long no = temp.getNo();
+		
+		UserVo nvo = userservice.get(no);
+		model.addAttribute("userVo", nvo);
+		
+		return "user/modifyform";
+	}
+	
+	@RequestMapping("/modify")
+	public String modify(HttpSession session, @ModelAttribute UserVo vo){
+		
+		UserVo temp = (UserVo)session.getAttribute("authUser");
+		Long no = temp.getNo();
+		
+		vo.setNo(no);
+		
+		userservice.update(vo);
+		return "user/modifysuccess";
+	}
+	
+	@RequestMapping(value="attach", method=RequestMethod.POST)
+	public String registerBoard(MultipartFile file) throws Exception{
+//		System.out.println(bbsVo.toString());
+//		System.out.println(file.getOriginalFilename());
+		userservice.attach(file);
+		
+		return "redirect:/main";
+	}
 //	
 //	@RequestMapping("/findInfo")	//찾기 폼
 //	public String findInfo(){
@@ -167,14 +195,6 @@ public class UserController {
 //		return "user/repasswordSuccess";
 //	}
 //	
-//	@ResponseBody	// 아이디 중복 검사
-//	@RequestMapping(value = "CheckEmail", method = RequestMethod.POST)
-//	public Map<String, Object> checkEmail(String email) {	//Request 객체받음, script or DB 객체 분별
-//		
-//		Map<String, Object> map = userService.checkEmail(email);
-//		
-//		return map;
-//	}
 //	
 //	//회원 관리
 //	@RequestMapping(value = "mlist")

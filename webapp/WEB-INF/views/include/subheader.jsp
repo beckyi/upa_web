@@ -1,69 +1,167 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>gs25_subheader</title>
+<script type="text/javascript" src="/upa/assets/js/jquery/jquery-1.9.0.js"></script>
+<script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script>
+
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="/upa/resources/webjars/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
+<link rel="stylesheet" href="/upa/theme/css/main.css">
+<!-- <link rel="stylesheet" href="/upa/theme/css/responsive.css"> -->
+<link rel="stylesheet" href="/upa/assets/css/main.css">
+<link rel="stylesheet" type="text/css" href="/upa/assets/css/sweetalert.css">
+<title>Insert title here</title>
 </head>
 <body>
+	<!-- header Menu -->
+	<section id="header">
+	<div class="container upa">
+		<div class="row">
+			<div class="col-md-7">
+				<div class="block-left">
+					<nav class="navbar navbar-default" role="navigation">
+					<div class="container-fluid">
+						<!-- Brand and toggle get grouped for better mobile display -->
+						<div class="navbar-header">
+							<button type="button" class="navbar-toggle collapsed"
+								data-toggle="collapse"
+								data-target="#bs-example-navbar-collapse-1">
+								<span class="sr-only">Toggle navigation</span> <span
+									class="icon-bar"></span> <span class="icon-bar"></span> <span
+									class="icon-bar"></span>
+							</button>
+							<div class="nav-logo">
+								<a href="/upa/main"><img src="/upa/assets/images/main/upa_logo.png" alt="logo"></a>
+							</div>
+						</div>
 
-	<div class="header">
-		<!-- topwrap -->
-		<div class="topwrap">
-			<!-- brandwrap -->
-			<div class="brdwrap">
-				<!-- utility -->
-				<div class="uty">
-					<ul>
-					<c:choose>
-					<c:when test='${empty sessionScope.authUser }'>
-					<li><a href="/gs25/user/loginform">로그인</a></li>
-					<li><a href="/gs25/user/joinform">회원가입</a></li>
-					</c:when>
-					<c:otherwise>
-						<li>${authUser.name}님안녕하세요^^;</li>
-						<li><a href="/gs25/user/modifyform">회원정보수정</a></li>
-						<li><a href="/gs25/user/logout">로그아웃</a></li>
-					</c:otherwise>
-				</c:choose>
-						</ul>
+						<!-- Collect the nav links, forms, and other content for toggling -->
+						<div class="collapse navbar-collapse"
+							id="bs-example-navbar-collapse-1">
+							<ul class="nav navbar-nav move">
+								
+							</ul>
+						</div>
+						<!-- /.navbar-collapse -->
 					</div>
-				<!-- //utility -->
+					<!-- /.container-fluid --> </nav>
+				</div>
 			</div>
-			<!-- //brandwrap -->
-			<!-- gnbwrap -->
-			<div class="gnbwrap">
-				<div class="gnbw">
-					<h1 class="logo">
-						<a href="/gs25/sub/main">GS25</a>
-					</h1>
-					<div class="gnb" id="gnb_menu">
-						<ul>
-							<li><h2>
-									<a href="/gs25/guestbook/list" class="on">방명록</a>
-								</h2></li>
-							<li><h2>
-									<a href="/gs25/event/eventlist">이벤트</a>
-								</h2></li>
-							<li><h2>
-									<a href="/gs25/submap/sublist">매장검색</a>
-								</h2></li>
-							<li><h2>
-									<a href="/gs25/product/list">상품</a>
-								</h2>
-						</ul>
+			<!-- .col-md-6 -->
+
+			<div class="col-md-5">
+				<div class="block-right">
+					<div class="contact-area userArea">
+						<c:choose>
+						<c:when test='${empty sessionScope.authUser }'>
+							<ul id="login_type1">
+								<li><a href="#" data-toggle="modal" data-target="#myModal"><img id= "loginc" src="/upa/assets/images/user/login.png"><li><i class="login"></i>로그인</a></li>
+								<li><a href="/upa/user/joinform"><img id= "signc" src="/upa/assets/images/user/signup.png"><i class="signup"></i>회원가입</a></li>
+							</ul>
+						</c:when>
+						<c:otherwise>
+							<ul id="login_type2">
+								<li><img src="/upa/assets/images/user/login_user.png"></li>
+								<li>${authUser.name}님</li>
+							</ul>
+							<ul>
+								<li><a href="/upa/user/modifyform">회원정보수정</a></li>
+								<li><a href="/upa/user/logout">로그아웃</a></li>
+							</ul>
+						</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
-
-				<div class="gnb_bg" style="display: none;"></div>
 			</div>
-			<!-- //gnbwrap -->
+			<!-- .col-md-6 close -->
 		</div>
-		<!-- //topwrap -->
+		<!-- .row close -->
 	</div>
-
+	<!-- .container close --> </section>
+	<!-- #heder close -->
+	
+	<!-- 모달 팝업 -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+			<h4 class="modal-title" id="myModalLabel">Login</h4>
+	      </div>
+	      <div class="modal-body">
+			 <section class="login-form">
+				<form method="post" action="" role="login">
+					<div>
+						<img src="/upa/assets/images/main/upa_logo.png" alt="" id="login_logo"/>
+						<h5>어서오세요. 방문해주셔서 감사합니다.</h5>
+					</div>			
+					<input type="email" id="id" name="id" placeholder="ID" required class="form-control input-lg" style="margin-bottom:10px;"/>
+					<input type="password" id="password" name="password" placeholder="Password" required class="form-control input-lg" style="margin-bottom:10px;"/>
+					<button type="button" name="login" id="btn_Login" class="btn btn-lg btn-block btn-info">Login</button>
+				</form>
+			  </section>
+	      </div>
+	      <div class="modal-footer" style="text-align: center;">
+			<div>
+				<a href="#" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
+				<a href="/upa/user/joinform" style="margin-right: 10px; float: right;">회원가입</a>
+			</div>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
+<!-- <script src="http://code.jquery.com/jquery-latest.min.js"></script> -->
+<!-- <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+<!-- <script src="http://googledrive.com/host/0B-QKv6rUoIcGREtrRTljTlQ3OTg"></script>ie10-viewport-bug-workaround.js -->
+<!-- <script src="http://googledrive.com/host/0B-QKv6rUoIcGeHd6VV9JczlHUjg"></script> -->
+<script>
+$(function() {	
+		 $("#btn_Login").on("click", function(){ 	
+			console.log('click');
+			if($("#id").val() == ""){
+				sweetAlert("아이디를 입력해주십시오.","Something went wrong", "error");
+				$("#id").focus();
+				return false;
+			} 
+			
+			if($("#password").val() == ""){
+				sweetAlert("비밀번호를 입력해주십시오.","Something went wrong", "error");
+				$("#password").focus();
+				return false;
+				}
+			
+			var id = $("#id").val();
+			var password = $("#password").val();
+		
+			$.ajax({	
+				url: "/upa/user/checkLogin",
+				type: "POST",
+				data: {"id":id, "password":password},
+				dataType: "text",
+				success: function(result){	//비동기식으로 진행되어 결과와 상관 없이 submit되므로 계속 refres됨(따로 동기식으로 변경해야함)
+					console.log(result);
+					if(result == "false"){
+						console.log(result);
+						sweetAlert("효하지 않는 로그인입니다.\n다시 시도해주세요..","Something went wrong", "error");
+						return false;
+					}
+					
+					 if(result == "true"){
+						location.href='/upa/main';
+					} 
+				},
+				error: function(jsXHR, status, e){
+					console.error("error:"+status+":"+e);
+				}
+			});
+		});
+	});
+</script>
 </html>

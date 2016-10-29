@@ -1,21 +1,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript" src="/upa/assets/js/jquery/jquery-1.9.0.js"></script>
-<script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script>
+<!-- <script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script> -->
 
-<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="/upa/resources/webjars/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
+<!-- <link rel="stylesheet" href="/upa/theme/css/responsive.css"> -->
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="/upa/theme/css/main.css">
-<link rel="stylesheet" href="/upa/theme/css/responsive.css">
 <link rel="stylesheet" href="/upa/assets/css/main.css">
-<title>Insert title here</title>
+<script src="/upa/assets/js/sweetalert.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="/upa/assets/css/sweetalert.css">
+<title>Utillize Parking Area</title>
 </head>
 <body>
 	<!-- header Menu -->
@@ -44,10 +45,11 @@
 						<div class="collapse navbar-collapse"
 							id="bs-example-navbar-collapse-1">
 							<ul class="nav navbar-nav move">
-								<li class="active"><a href="/upa/main">Home <span class="sr-only">(current)</span></a></li>
-								<li><a href="#">Features</a></li>
-								<li><a href="#">Parking Lot</a></li>
-								<li><a href="#">Gallery</a></li>
+								<!-- <li class="active"><a href="/upa/main">Home <span class="sr-only">(current)</span></a></li> -->
+								<li><a href="#service" class="page-scroll">Features</a></li>
+								<li><a href="#contant-1">Video</a></li>
+								<li><a href="#gallery">Parking Lot</a></li>
+								<li><a href="#contant-2">Register</a></li>
 							</ul>
 						</div>
 						<!-- /.navbar-collapse -->
@@ -60,10 +62,24 @@
 			<div class="col-md-5">
 				<div class="block-right">
 					<div class="contact-area userArea">
-						<ul>
-							<li><a href="#" data-toggle="modal" data-target="#myModal"><img id= "loginc" src="/upa/assets/images/user/login.png"><li><i class="login"></i>Login</a></li>
-							<li><a href="/upa/user/joinform"><img id= "signc" src="/upa/assets/images/user/signup.png"><i class="signup"></i>Sign up</a></li>
-						</ul>
+						<c:choose>
+						<c:when test='${empty sessionScope.authUser }'>
+							<ul id="login_type1">
+								<li><a href="#" data-toggle="modal" data-target="#myModal"><img id= "loginc" src="/upa/assets/images/user/login.png"><li><i class="login"></i>로그인</a></li>
+								<li><a href="/upa/user/joinform"><img id= "signc" src="/upa/assets/images/user/signup.png"><i class="signup"></i>회원가입</a></li>
+							</ul>
+						</c:when>
+						<c:otherwise>
+							<ul id="login_type2">
+								<li><img src="/upa/assets/images/user/login_user.png"></li>
+								<li>${authUser.name}님</li>
+							</ul>
+							<ul>
+								<li><a href="/upa/user/modifyform">회원정보수정</a></li>
+								<li><a href="/upa/user/logout">로그아웃</a></li>
+							</ul>
+						</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			</div>
@@ -114,13 +130,13 @@ $(function() {
 		 $("#btn_Login").on("click", function(){ 	
 			console.log('click');
 			if($("#id").val() == ""){
-				alert("아이디를 입력해주십시오.");
+				sweetAlert("아이디를 입력해주십시오.","Something went wrong", "error");
 				$("#id").focus();
 				return false;
 			} 
 			
 			if($("#password").val() == ""){
-				alert("비밀번호를 입력해주십시오.");
+				sweetAlert("비밀번호를 입력해주십시오.","Something went wrong", "error");
 				$("#password").focus();
 				return false;
 				}
@@ -129,7 +145,7 @@ $(function() {
 			var password = $("#password").val();
 		
 			$.ajax({	
-				url: "checkLogin",
+				url: "/upa/user/checkLogin",
 				type: "POST",
 				data: {"id":id, "password":password},
 				dataType: "text",
@@ -137,7 +153,7 @@ $(function() {
 					console.log(result);
 					if(result == "false"){
 						console.log(result);
-						alert("유효하지 않는 로그인입니다. 다시 시도해주세요.")
+						sweetAlert("유효하지 않는 로그인입니다.\n다시 시도해주세요..","Something went wrong", "error");
 						return false;
 					}
 					
@@ -145,7 +161,6 @@ $(function() {
 						location.href='/upa/main';
 					} 
 				},
-				
 				error: function(jsXHR, status, e){
 					console.error("error:"+status+":"+e);
 				}
