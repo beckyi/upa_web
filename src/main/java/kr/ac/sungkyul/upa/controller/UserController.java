@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -144,57 +145,38 @@ public class UserController {
 		return "user/idresult";
 	}
 //		
-//	@ResponseBody
-//	@RequestMapping(value = "checkPass", method = RequestMethod.POST)	//비밀번호 찾기 검사
-//	public String checkPass(@RequestBody UserVo userVo, HttpSession session) {	//Request 객체받음, script or DB 객체 분별
-//		String email = userService.checkPass(userVo);
-//		String result = "true";
-//		
-//		if(email == null){
-//			result = "false";
-//		}
-//		else {
-//			try {
-//				result = userService.sendEmail(email);
-//				System.out.println(result);
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		return result;
-//	}
-//	
-//	@RequestMapping(value = "/{domain}/repassword", method = RequestMethod.GET)
-//	public String abc(@PathVariable String domain, Model model){
-//		Long no = userService.passlink(domain);
-//		System.out.println(no);
-////		비밀번호 변경창으로 보냄 (어떤 멤버인지는 알아야 함)
-//		model.addAttribute("userno", no);
-//		
-//		return "user/repassword";
-//	}
-//	
-//	@ResponseBody
-//	@RequestMapping(value ="/setPass", method = {RequestMethod.GET, RequestMethod.POST})	//재설정 비번 저장
-//	public String setPassword(Long no, String password){
-//		//state 1로 변경
-//		String result = userService.setpass(no,password);
-//		System.out.println("controller: "+result);
-//		return result;
-//	}
-//	
-//	@RequestMapping("/passresult")	//메일 전송 완료
-//	public String passResult(){
-//		return "user/passresult";
-//	}
-//	
-//	@RequestMapping("/repasswordSuccess")	//비번 재설정 완료
-//	public String repasswordSuccess(){
-//		return "user/repasswordSuccess";
-//	}
-//	
-//	
+	@ResponseBody
+	@RequestMapping(value = "checkPass", method = RequestMethod.POST)	//비밀번호 찾기 검사
+	public String checkPass(@RequestBody UserVo userVo, HttpSession session) {	//Request 객체받음, script or DB 객체 분별
+		UserVo temp = userservice.checkPass(userVo);
+		
+		Long no = temp.getNo();
+		String name = temp.getName();
+		String email = temp.getEmail();
+		
+		String result = "true";
+		
+		if(name == null){
+			result = "false";
+		}
+		else {
+			try {
+				result = userservice.sendEmail(no, name, email);
+				System.out.println(result);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	@RequestMapping("/passresult")	//메일 전송 완료
+	public String passResult(){
+		return "user/passresult";
+	}
+	
+	
 //	//회원 관리
 //	@RequestMapping(value = "mlist")
 //	public String mlist(Model model, 

@@ -41,6 +41,7 @@ public class MapController {
 	public String insert(@RequestBody MapVo mapVo){
 		String result ="true";
 		System.out.println(mapVo.toString());
+		result = mapservice.insert(mapVo);
 		return result;
 
 	}

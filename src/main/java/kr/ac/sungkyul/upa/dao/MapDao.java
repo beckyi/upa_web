@@ -23,11 +23,18 @@ public class MapDao {
 	
 	//map keyword search
 	public List<MapVo> getList(String keyword) {
-			System.out.println("1 "+keyword);
+//			System.out.println("1 "+keyword);
 			//검색된 지도 리스트 가져오기
 			keyword = "%" + keyword + "%";
-			System.out.println("2 "+keyword);
+//			System.out.println("2 "+keyword);
 			List<MapVo> list=sqlSession.selectList("map.getMapListKeyword",keyword);
 			return list;
+	}
+	
+	//주차장 삽입
+	public Integer insert(MapVo mapvo) {
+	
+		Integer resultInt =sqlSession.insert("map.insert",mapvo);
+		return resultInt;
 	}
 }

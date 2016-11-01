@@ -212,7 +212,7 @@ legend {
     white-space: nowrap;
 }
 #title1 {
-    padding-top: 70px;
+    padding-top: 21px;
     font-size: 35px;
     color: #222;
     font-weight: bold;
@@ -390,11 +390,11 @@ legend {
 }
 /*joinSuccess*/
 #join-succ{
-	height:250px;
+	height:289px;
     padding: 25px 0 40px;
     border-top: 1px solid #6c6c6c;
     border-bottom: 1px solid #e0e0e0;
-    background: #fbfbfb url("/gs25/assets/images/login/gs25_store.png") 60px no-repeat;
+    background: #fbfbfb url("/upa/assets/images/main/car_icon.png") 114px no-repeat;
 }
 #goMain{
 	margin: 40px 0 0 480px;	

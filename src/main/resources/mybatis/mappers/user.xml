@@ -38,7 +38,7 @@
 	<update id="update" parameterType= "uservo">
 		<![CDATA[
 			update users 
-				set phonenum = #{phonenum },
+				set
 				carnum = #{carnum },
 				email = #{email }
 				where no = #{no }
@@ -57,9 +57,25 @@
 		]]>
 	</update>
 	
+	<!-- 아이디 찾기 -->
 	<select id="idFind" parameterType="uservo" resultType="string">
 	<![CDATA[
 		select id from users where name=#{name } and  phonenum=#{phonenum }
 	]]>
-</select>
+	</select>
+
+	<!-- 비밀번호 찾기 -->
+	<select id="passFind" parameterType="uservo" resultType="uservo">
+		<![CDATA[
+			select no, name, email from users where id=#{id } and name=#{name } and phonenum=#{phonenum }
+		]]>
+	</select>
+	
+	<!-- 임시비밀번호 저장 -->
+	<update id="tempPass" parameterType= "uservo">
+		<![CDATA[
+		update users 
+			set password = #{password }	where no = #{no }
+		]]>
+	</update>
 </mapper>

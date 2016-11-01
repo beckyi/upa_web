@@ -1,21 +1,16 @@
 package kr.ac.sungkyul.upa.service;
 
-import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,6 +24,9 @@ public class UserService {
 	@Autowired
 	private UserDao usersdao;
 	
+	@Autowired
+	private MailSender mailSender;
+	
 	// 로그인
 	public UserVo login(String id, String password){ // 로그인
 		
@@ -38,7 +36,6 @@ public class UserService {
 		//비밀번호 암호화
 		String password_SHA = SHACheckSumExample(password);
 		uservo.setPassword(password_SHA);
-//		System.out.println("dd "+uservo.toString());
 		UserVo authUser = usersdao.login(uservo);
 		return authUser;
 	}
@@ -94,18 +91,15 @@ public class UserService {
 	
 	// 회원정보 수정
 	public void update(UserVo vo){ 
-		if(vo.getPassword() == ""){
-			System.out.println("비번 입력X");
+		String password = vo.getPassword();
+		
+		if(password == ""){
 			usersdao.update(vo);	
 		} else{
-			System.out.println("비번 입력");
-			//비밀번호 암호화
-			String pass =vo.getPassword();
-			pass = SHACheckSumExample(pass);
-			vo.setPassword(pass);
-			System.out.println("입력햇어!! "+vo.toString());
-			usersdao.update(vo);
-		}	
+			password = SHACheckSumExample(password);
+			vo.setPassword(password);
+			usersdao.update2(vo);
+		}
 	}
 	
 	/*public JFrame imageload(){
@@ -129,30 +123,30 @@ public class UserService {
 	public void attach(MultipartFile file) throws IOException{
 		//1. fno: 저장할때
 		
-				//3.orgName 
-				String orgName= file.getOriginalFilename();
-				
-				//4.fileSize 
-				Long fileSize = file.getSize();
-				
-				//5.saveName 
-				String saveName = UUID.randomUUID().toString()+"-"+orgName;
-				
-				//6.path
-				String path="http://220.67.115.35//UPA//MapReg.php";
-				
-				AttachFileVo attachFileVo = new AttachFileVo();
-				attachFileVo.setPath(path);
-				attachFileVo.setOrgName(orgName);
-				attachFileVo.setSaveName(saveName);
-				attachFileVo.setFileSize(fileSize);
-				
-				System.out.println(attachFileVo.toString());
+		//3.orgName 
+		String orgName= file.getOriginalFilename();
+		
+		//4.fileSize 
+		Long fileSize = file.getSize();
+		
+		//5.saveName 
+		String saveName = UUID.randomUUID().toString()+"-"+orgName;
+		
+		//6.path
+		String path="http://220.67.115.35//UPA//MapReg.php";
+		
+		AttachFileVo attachFileVo = new AttachFileVo();
+		attachFileVo.setPath(path);
+		attachFileVo.setOrgName(orgName);
+		attachFileVo.setSaveName(saveName);
+		attachFileVo.setFileSize(fileSize);
+		
+		System.out.println(attachFileVo.toString());
 //				System.out.println("service: "+bbsVo.toString());
-				/*usersdao.insertAttachFile(attachFileVo);*/
-				
-				File target = new File(path,saveName);
-				FileCopyUtils.copy(file.getBytes(), target);
+		/*usersdao.insertAttachFile(attachFileVo);*/
+		
+		File target = new File(path,saveName);
+		FileCopyUtils.copy(file.getBytes(), target);
 	}
 	
 	//아이디찾기
@@ -160,4 +154,67 @@ public class UserService {
 		String id = usersdao.find(vo);
 		return id;
 	}
+	
+	//비밀번호 찾기 시 검사
+	public UserVo checkPass(UserVo vo){	
+		UserVo uservo = usersdao.passfind(vo);
+		return uservo;
+	}
+	
+	 public String sendEmail(Long no, String name, String email) throws Exception {
+	    	
+	    	SimpleMailMessage message = new SimpleMailMessage();
+	    	
+	    	String ranPass = RandomPasswd();
+	    	System.out.println("ran "+ranPass);
+	    	
+	    	String sender = "UPA@naver.com"; 
+	    	String receiver = "beckyi@naver.com"; //받을사람의 이메일입니다.
+	        String subject = "UPA 회원님의 임시 비밀번호입니다.";
+	        String content = "안녕하세요. UPA입니다. "+name+" 회원님의 임시 비밀번호 입니다. 로그인 후 변경 해주기 바랍니다.\n" 
+	        				+"임시 비밀번호: "+ ranPass;
+	    	
+	        message.setFrom(sender);
+	        message.setTo(receiver);
+	        message.setSubject(subject);
+	        message.setText(content);
+	        mailSender.send(message);
+	        
+	        System.out.println("이메일 전송");
+	        
+	        //임시 비번으로 비번 변경
+	        String sh_ranPass = SHACheckSumExample(ranPass); //암호화
+	        
+	        UserVo uservo = new UserVo();
+	        uservo.setNo(no);
+	        uservo.setPassword(sh_ranPass);
+	        
+	        usersdao.tempPass(uservo);
+	        
+	        String result = "true";
+	        return result;
+	 }
+	 
+	 /*임시 비밀번호 발급 클래스*/
+	 public String RandomPasswd(){
+
+	     //임시비밀번호 8자리
+	     final int digit = 8;
+
+	     //임시 비밀번호 발급
+	    
+         StringBuilder sb = new StringBuilder();
+//	     int type = 0;
+
+         for(int i=0;i<digit;i++)
+         {
+             sb.append((int)(Math.random()*9));
+
+         }
+         
+         String ranpass = sb.toString();
+         
+         return ranpass;
+     
+	 }
 }

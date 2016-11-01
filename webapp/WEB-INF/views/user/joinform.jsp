@@ -80,14 +80,14 @@
 	    <div class="form-group">
 	    <label for="inputPassword" class="col-sm-2 control-label">비밀번호</label>
 	    	<div class="col-sm-5">
-	    		<input type="password" class="form-control" id="pass" name="password" placeholder="비밀번호">
+	    		<input type="password" class="form-control" id="pass" name="password" value="" placeholder="비밀번호">
 	    		<p class="help-block">영어, 숫자 포함 8자 이상</p>
 	    	</div>
 	    </div>
       	<div class="form-group">
 		    <label for="inputPasswordCheck" class="col-sm-2 control-label">비밀번호 확인</label>
 		    <div class="col-sm-5">
-		    	<input type="password" class="form-control" id="repassword" name="repassword" placeholder="비밀번호 확인">
+		    	<input type="password" class="form-control" id="repassword" name="repassword" value="" placeholder="비밀번호 확인">
 		      <p class="help-block">비밀번호를 한번 더 입력해주세요.</p>
 		    </div>
 		      <font name="passCheck" id="passCheck"></font>

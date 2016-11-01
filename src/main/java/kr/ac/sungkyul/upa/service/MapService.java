@@ -24,4 +24,27 @@ public class MapService {
 		List<MapVo> list = mapdao.getList(keyword);
 		return list;
 	}
+	
+	//주차장 삽입(좌표 분리하여 저장)
+	public String insert(MapVo mapvo){
+		String str = mapvo.getLatitude();
+
+		String latitude =  str.substring(1,18);
+		String longitude =  str.substring(20,str.length()-1);
+		System.out.println(latitude + " " + longitude);
+		
+		mapvo.setLatitude(latitude);
+		mapvo.setLongitude(longitude);
+		
+		Integer resultInt = mapdao.insert(mapvo);
+		String result = String.valueOf(resultInt); // String 변환
+		
+		if(result == "1"){
+			result = "true";
+		} else{
+			result = "false";
+		}
+		
+		return result;
+	}
 }

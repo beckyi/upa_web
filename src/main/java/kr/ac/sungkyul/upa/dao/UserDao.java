@@ -40,27 +40,35 @@ public class UserDao {
 		return vo;
 	}
 	
-	//회원정보 수정
+	//회원정보 수정 (비번 입력X)
 	public void update(UserVo vo) {
-		
-		String pass = vo.getPassword();
-		
-		if(pass == null){
-			sqlSession.update("user.update",vo);						
-		} else{
-			sqlSession.update("user.update2",vo);		
-		}
-		
+		sqlSession.update("user.update",vo);						
+	}
+	
+	//회원정보 수정 2 (비번 입력O)
+	public void update2(UserVo vo){
+		sqlSession.update("user.update2",vo);	
 	}
 	
 	public void insertAttachFile(AttachFileVo vo){
 		/*sqlSession.insert("user.attach",vo);*/		
 	}
 	
-	public String find(UserVo vo) { // id find
+	// id find
+	public String find(UserVo vo) { 
 			
-			String id = sqlSession.selectOne("user.idFind",vo);
-			return id;
-		}
+		String id = sqlSession.selectOne("user.idFind",vo);
+		return id;
+	}
 	
+	public UserVo passfind(UserVo vo) { // password find check
+		
+		UserVo usrevo = sqlSession.selectOne("user.passFind",vo);	//no, name, email 받아옴
+		return usrevo;
+	}
+	
+	// temp password
+	public void tempPass(UserVo vo) { 
+		sqlSession.selectOne("user.tempPass",vo);
+	}
 }
