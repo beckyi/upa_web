@@ -7,8 +7,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<script type="text/javascript" src="/upa/assets/js/jquery/jquery-1.9.0.js"></script>
-<script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script>
+<!-- <script type="text/javascript" src="/upa/assets/js/jquery/jquery-1.9.0.js"></script> -->
+<!-- <script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script> -->
 
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 <!-- <link rel="stylesheet" href="/upa/resources/webjars/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
@@ -78,8 +78,8 @@
 						</c:choose>
 					</div>
 				</div>
-			</div>
 			<!-- .col-md-6 close -->
+			</div>
 		</div>
 		<!-- .row close -->
 	</div>
@@ -109,7 +109,7 @@
 	      </div>
 	      <div class="modal-footer" style="text-align: center;">
 			<div>
-				<a href="#" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
+				<a href="/upa/user/findInfo" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
 				<a href="/upa/user/joinform" style="margin-right: 10px; float: right;">회원가입</a>
 			</div>
 	      </div>
@@ -149,7 +149,7 @@ $(function() {
 					console.log(result);
 					if(result == "false"){
 						console.log(result);
-						sweetAlert("효하지 않는 로그인입니다.\n다시 시도해주세요..","Something went wrong", "error");
+						sweetAlert("유효하지 않는 로그인입니다.\n다시 시도해주세요..","Something went wrong", "error");
 						return false;
 					}
 					

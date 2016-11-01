@@ -65,3 +65,105 @@
 }
 /*register hover*/
 .edit-button-3:hover{background-color: rgba(255, 255, 255, 0.88); color: #5dca89; border: 3px solid #5dca89;}
+/*search map keyword*/
+#keyword{
+    border-radius: 5px;
+    width: 500px;
+    height: 50px;
+    font-size: 20px;
+    margin-right: 22px;
+    padding-left: 15px;
+    border: 1px solid #bbb;
+}
+/*주차장 주소찾기 (주차장등록창)*/
+#address{
+    width: 400px;
+    padding-left: 13px;
+    height: 35px;
+    margin-right: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+#addressSearch{
+	width: 113px;
+    height: 35px;
+    border-radius: 5px;
+    background: #428bca;
+    border: 0px;
+    font-size: 15px;
+    color: white;
+}
+#txt3{
+    float: left;
+    line-height: 35px;
+    font-size: 18px;
+    margin-right: 6px;
+    margin-bottom: 0px;
+}
+#searchbottom{
+    color: #999;
+    text-align: center;
+    margin: 18px 0px;
+}
+/*main*/
+#addSearch{
+    width: 113px;
+    height: 50px;
+    border-radius: 5px;
+    background: #428bca;
+    border: 0px;
+    font-size: 15px;
+    color: white;
+}
+#bottomline{
+    margin-left: 2px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid gray;
+    width: 79px;
+}
+#park_note{
+	width:93%;
+	border:1px solid #eee;
+	padding: 15px 10px;
+    height: 134px;
+}
+.tempoar h3{
+    margin-bottom: 20px;
+}
+/*주차장 요청*/
+#regis{
+    background: #ff6600;
+    width: 190px;
+    height: 43px;
+    border-radius: 2px;
+    font-size: 17px;
+    margin-right: 14px;
+    border: 0px;
+}
+#cancel{
+    display: block;
+    float: right;
+    background: #656463;
+    width: 190px;
+    height: 43px;
+    border-radius: 2px;
+    font-size: 17px;
+    border: 0px;
+    color: white;
+    text-align: center;
+    padding: 9px;
+}
+/*상단으로 이동*/
+#btnTop{
+	display:none;
+	position: fixed;
+    bottom: 3%;
+    right: 30px;
+    width: 76px;
+    height: 32px;
+    padding: 5px 0 0;
+    overflow: hidden;
+    color: #777;
+    text-align: center;
+    background: #ffffff;
+    border: 0.3px solid;}  

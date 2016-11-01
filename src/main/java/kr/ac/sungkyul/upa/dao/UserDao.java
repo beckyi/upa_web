@@ -42,11 +42,25 @@ public class UserDao {
 	
 	//회원정보 수정
 	public void update(UserVo vo) {
-		sqlSession.update("user.update",vo);			
+		
+		String pass = vo.getPassword();
+		
+		if(pass == null){
+			sqlSession.update("user.update",vo);						
+		} else{
+			sqlSession.update("user.update2",vo);		
+		}
+		
 	}
 	
 	public void insertAttachFile(AttachFileVo vo){
 		/*sqlSession.insert("user.attach",vo);*/		
 	}
+	
+	public String find(UserVo vo) { // id find
+			
+			String id = sqlSession.selectOne("user.idFind",vo);
+			return id;
+		}
 	
 }

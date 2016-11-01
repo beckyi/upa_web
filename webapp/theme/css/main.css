@@ -503,7 +503,7 @@ width: 11px;}
 	9) Submit Start
 ===========================*/
 
-#submit-area{ background: #F3F5F5; padding-top: 90px; padding-bottom: 120px}
+#submit-area{ background: #FFF; padding-top: 90px; padding-bottom: 120px}
 #submit-area .block{}
 .submit-contant{}
 .submit-header{text-align: center; padding-bottom: 50px; }

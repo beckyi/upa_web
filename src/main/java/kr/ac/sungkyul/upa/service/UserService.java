@@ -139,7 +139,7 @@ public class UserService {
 				String saveName = UUID.randomUUID().toString()+"-"+orgName;
 				
 				//6.path
-				String path="c:\\upload";
+				String path="http://220.67.115.35//UPA//MapReg.php";
 				
 				AttachFileVo attachFileVo = new AttachFileVo();
 				attachFileVo.setPath(path);
@@ -153,5 +153,11 @@ public class UserService {
 				
 				File target = new File(path,saveName);
 				FileCopyUtils.copy(file.getBytes(), target);
+	}
+	
+	//아이디찾기
+	public String idfind(UserVo vo){ //아이디 찾기
+		String id = usersdao.find(vo);
+		return id;
 	}
 }

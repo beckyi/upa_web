@@ -118,32 +118,31 @@ public class UserController {
 	
 	@RequestMapping(value="attach", method=RequestMethod.POST)
 	public String registerBoard(MultipartFile file) throws Exception{
-//		System.out.println(bbsVo.toString());
 //		System.out.println(file.getOriginalFilename());
 		userservice.attach(file);
 		
 		return "redirect:/main";
 	}
-//	
-//	@RequestMapping("/findInfo")	//찾기 폼
-//	public String findInfo(){
-//		return "user/findInfo";
-//	}
-//
-//	@RequestMapping("/idFind")	// 아이디 찾기
-//	public String idFind(@ModelAttribute UserVo vo, Model model){
-//
-//		String email = userService.idfind(vo);
-//
-//		if(email == null){	//계정 정보가 없을 경우
-//			Boolean result = false;
-//			model.addAttribute("result", result);
-//			return "user/findInfo";
-//		}
-//		
-//		model.addAttribute("email",email);
-//		return "user/idresult";
-//	}
+	
+	@RequestMapping("/findInfo")	//찾기 폼
+	public String findInfo(){
+		return "user/findInfo";
+	}
+	
+	@RequestMapping("/idFind")	// 아이디 찾기
+	public String idFind(@ModelAttribute UserVo vo, Model model){
+
+		String id = userservice.idfind(vo);
+
+		if(id == null){	//계정 정보가 없을 경우
+			Boolean result = false;
+			model.addAttribute("result", result);
+			return "user/findInfo";
+		}
+		
+		model.addAttribute("id",id);
+		return "user/idresult";
+	}
 //		
 //	@ResponseBody
 //	@RequestMapping(value = "checkPass", method = RequestMethod.POST)	//비밀번호 찾기 검사

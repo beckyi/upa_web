@@ -23,14 +23,11 @@
 <!--<link rel="stylesheet" href="/upa/theme/css/owl.transitions.css">-->
 <!--<link rel="stylesheet" href="/upa/theme/css/font-awesome.min.css"> -->
 <!-- <link rel="stylesheet" href="/upa/resources/webjars/bootstrap-3.3.2-dist/css/bootstrap.min.css"> -->
-
 <!-- <link rel="stylesheet" href="/upa/theme/css/main.css"> -->
+
 <link rel="stylesheet" href="/upa/theme/css/responsive.css">
 <link rel="stylesheet" href="/upa/assets/css/ihover.css">
 <!-- <script src="/upa/theme/js/vendor/modernizr-2.6.2.min.js"></script> -->
-
-<!-- 지도 -->
-
 </head>
 <body>
 
@@ -243,12 +240,12 @@
 		</div>
 		</div>
 		<div id="maps"></div>
-		<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=8b1213d39c6d1ac9748ce62f7bf32852"></script>
+		<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=8b1213d39c6d1ac9748ce62f7bf32852&libraries=services"></script>
 		<script>
 			var container = document.getElementById('maps');
 			var options = {
-				/* center: new daum.maps.LatLng(37.381896, 126.929920), */
-				center: new daum.maps.LatLng(37.533025, 126.951791),
+				center: new daum.maps.LatLng(37.381896, 126.929920),
+				/* center: new daum.maps.LatLng(37.533025, 126.951791), */
 				level: 3
 			};
 		
@@ -291,21 +288,16 @@
 			
 			// 마커를 표시할 위치와 내용을 가지고 있는 객체 배열입니다 
 			var positions = [
-			    {
+			    
+				<c:forEach var = 'vo' items='${list}' varStatus='s'>
+				{
+				   content: '${vo.name}',
+				   latlng: new daum.maps.LatLng('${vo.latitude}', '${vo.longitude}')
+				},
+				</c:forEach>
+				{
 			        content: '<div>집앞 주차장1</div>', 
-			        latlng: new daum.maps.LatLng(37.533025, 126.951791)
-			    },
-			    {
-			        content: '<div>집앞 주차장2</div>', 
-			        latlng: new daum.maps.LatLng(37.533403, 126.952365)
-			    },
-			    {
-			        content: '<div>집앞 주차장3</div>', 
-			        latlng: new daum.maps.LatLng(37.532466, 126.951835)
-			    },
-			    {
-			        content: '<div>집앞 주차장4</div>',
-			        latlng: new daum.maps.LatLng(37.532626, 126.950145)
+			        latlng: new daum.maps.LatLng(37.3800181, 126.9264755)
 			    }
 			];
 
@@ -326,6 +318,12 @@
 			    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
 			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+			    
+			 // 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
+				daum.maps.event.addListener(marker, 'click', function() {
+					console.log('click');
+				    $('div#rpModal').modal();	//주차장 정보 창 띄우기
+				});
 			}
 
 			// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
@@ -342,15 +340,23 @@
 			    };
 			}
 			
-			// 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
-			daum.maps.event.addListener(marker, 'click', function() {
-				console.log('click');
-			    $('div#rpModal').modal();	//주차장 정보 창 띄우기
-			});
-
+			
 		</script>
+		
 		<div class="container">
-		<!-- .row close -->
+			<div style="width:639px; margin:13px auto;">
+			<input type="text" id="keyword" name="keyword" value="" placeholder="지역명 또는 상세주소">
+			<button id="addSearch">주차장 찾기</button>
+			</div>
+			<div class="gallery-items-text">
+				<p style="padding-top: 10px; text-align: center;">
+					※ 지역명 또는 상세 주소를 입력하셔야 합니다. ex) 성결대(x), 만안구 (o), 성결대학로 53 (o)
+				</p>
+			</div>
+		</div>
+		
+	<!-- 	<div class="container">
+		.row close
 		<div class="row">
 			<div class="col-md-12">
 				<div class="block-bottom">
@@ -367,26 +373,13 @@
 								</p>
 							</div>
 						</div>
-						
-						<!-- <div class="gallery-items item">
-							<div class="gallery-img">
-								<img src="img/mobile-phon-2.png" alt="img">
-							</div>
-							<div class="gallery-items-text">
-								<p>
-									Duis bibendum diam non erat facilaisis <br> tincidunt.
-									Fusce leo neque, lacinia at <br> tempor vitae, porta at
-									arcu.
-								</p>
-							</div>
-						</div> -->
 					</div>
 				</div>
 			</div>
-			<!-- .col-md-12 close -->
+			.col-md-12 close
 		</div>
-		<!-- .row close -->
-	</div>
+		.row close
+	</div> -->
 	<!-- .container close --> </section>
 	<!-- #gallery close -->
 
@@ -528,7 +521,7 @@
 			<div class="col-md-12">
 				<div class="block">
 					<div class="submit-contant">
-						<div class="submit-header">
+						<!-- <div class="submit-header">
 							<i class="fa fa-envelope-o"></i>
 							<h3>Subscribe our Newsletter</h3>
 						</div>
@@ -539,7 +532,7 @@
 									<input type="submit" value="submit">
 								</form>
 							</div>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
@@ -549,10 +542,27 @@
 	</div>
 	<!-- .container close --> </section>
 	<!-- #submit close -->
-
+	<a href="#" id="btnTop">TOP</a>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $(window).scroll(function(){
+		        if($(this).scrollTop() > 0){
+		            $('#btnTop').fadeIn();
+		        }else{
+		            $('#btnTop').fadeOut();
+		        }
+		    });
+		 
+		    $('#btnTop').click(function () {
+		        $('html, body').animate({scrollTop: 0}, 450);
+		        return false;
+		    });
+		});
+	</script>
 
 	<!-- footer Start -->
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
+	
 	<!-- #footer -->
 
 	<script src="/upa/theme/js/bootstrap.min.js"></script>
@@ -576,34 +586,85 @@
 	<div class="modal fade" id="rpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="width: 1500px; margin: 60px auto;">
 	    <div class="modal-content">
-	      <div class="modal-header" style="padding-left: 23px;">
-			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="myModalLabel">[신청] UPA 주차장 정보</h3>
+	      <div class="modal-header" style="padding-left: 23px;background: #555;">
+			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" style="color:white;">×</span><span class="sr-only">Close</span></button>
+			<h3 class="modal-title" id="myModalLabel" style="color:white;">UPA 주차장 정보 ${vo.latitude}</h3>
 	      </div>
-	      <div class="modal-body">
-			 <section class="login-form">
-				<form method="post" action="" role="login">
-					<div>
-						<h5>안녕하세요. 주차장을 공유해주셔서 감사합니다.</h5>
+	      <div class="modal-body" style="height:530px;">
+					<div style="margin-bottom:20px;">
+						<h5>안녕하세요. UPA 회원님이 공유해주신 주차장입니다.</h5>
 					</div>
 					<div class="col-sm-6">
-					
-					<div class="col-sm-6">
-						<input type="email" id="id" name="id" placeholder="ID" required class="form-control input-lg" style="margin-bottom:10px;"/>
-						<input type="password" id="password" name="password" placeholder="Password" required class="form-control input-lg" style="margin-bottom:10px;"/>
-						<button type="button" name="login" id="btn_Login" class="btn btn-lg btn-block btn-info">Login</button>
+						<img src="/upa/assets/images/parking/ex01.jpg">
 					</div>
-				</form>
-			  </section>
+					<div class="col-sm-6">
+						<h1 style="margin-top:6px;margin-bottom: 20px;">주차장 이름</h1>
+						<div  id="bottomline"></div>
+						<div class="tempoar">
+							<h3>주소: 서울시 만안구 성결대학로 58</h3>
+							<h3>요금: 1500원(1시간당)</h3>
+							<h3>현재 사용 가능 상태 : 가능</h3>
+							<h3>제공 가능 시간: 10:00 am ~ 18:00 pm</h3>
+						</div>
+						<h3>주의사항</h3>
+						<div id="park_note">
+						<h4>주의사항</h4>
+						</div>
+					</div>
 	      </div>
 	      <div class="modal-footer" style="text-align: center;">
 			<div>
-				<a href="#" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
-				<a href="/upa/user/joinform" style="margin-right: 10px; float: right;">회원가입</a>
+				<p style="margin: 0px;">Copyright © 2016.Utilize Parking Area. All rights reserved</p>
 			</div>
 	      </div>
 	    </div>
 	  </div>
 	</div>
+	
+<script>
+$(function() {
+	
+	console.log('read?');
+	$("#addSearch").click(function(){
+		console.log('click');
+		console.log($("#keyword").val());
+		
+		if($("#keyword").val() == ""){
+			sweetAlert("검색 주소를 입력하시지 않으셨습니다.","Something went wrong", "error");
+		} else{
+		// 주소-좌표 변환 객체를 생성합니다
+		var geocoder = new daum.maps.services.Geocoder();
+
+		// 주소로 좌표를 검색합니다
+		geocoder.addr2coord($("#keyword").val(), function(status, result) {
+		    // 정상적으로 검색이 완료됐으면 
+		     if (status === daum.maps.services.Status.OK) {
+
+		        var coords = new daum.maps.LatLng(result.addr[0].lat, result.addr[0].lng);
+		        
+		        /* // 결과값으로 받은 위치를 마커로 표시합니다
+		        var marker = new daum.maps.Marker({
+		            map: map,
+		            position: coords
+		        });
+
+		        // 인포윈도우로 장소에 대한 설명을 표시합니다
+		        var infowindow = new daum.maps.InfoWindow({
+		            content: '<div style="width:150px;text-align:center;padding:6px 0;">검색 지역</div>'
+		        });
+		        infowindow.open(map, marker); */
+
+		        // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+		        map.setCenter(coords);
+		    } else{
+		    	sweetAlert("결과가 없습니다.","Something went wrong", "error");
+		    }
+		});
+		
+		}
+		
+	});
+});
+</script>
 </body>
 </html>

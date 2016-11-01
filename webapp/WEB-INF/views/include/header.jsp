@@ -113,7 +113,7 @@
 	      </div>
 	      <div class="modal-footer" style="text-align: center;">
 			<div>
-				<a href="#" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
+				<a href="/upa/user/findInfo" style="margin-left: 6px; float: left;">아이디/비밀번호 찾기</a>
 				<a href="/upa/user/joinform" style="margin-right: 10px; float: right;">회원가입</a>
 			</div>
 	      </div>

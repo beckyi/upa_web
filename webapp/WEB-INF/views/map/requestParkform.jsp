@@ -7,24 +7,91 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 
-<<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="/upa/assets/css/material.min.css" />
 <link rel="stylesheet" href="/upa/theme/css/main.css">
 <link rel="stylesheet" href="/upa/theme/css/responsive.css">
+<link rel="stylesheet" href="/upa/assets/css/bootstrap-material-datetimepicker.css" />
 <link href="/upa/assets/css/user.css" rel="stylesheet" type="text/css">
+
+
 <script type="text/javascript" src="/upa/assets/js/jquery/jquery-1.9.0.js"></script>
 <script src="/upa/assets/js/sweetalert.min.js"></script> 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="/upa/assets/js/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="/upa/assets/js/bootstrap-material-datetimepicker.js"></script>
 
 <title>UPA REQUEST PARKING LOT</title>
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
 	<div class="container">
-		<h2 style="margin: 0px auto;">주자장 등록하기</h2>
-	
-		<div id="maps"></div>
+		<h2 style="margin: 0px auto 50px;">주자장 등록하기</h2>
+		 <div class="page-header">
+		  <h3>기본정보 <small>주차장 정보 기입</small></h3>
+	    </div>
+	    <form class="form-horizontal" id="request-form" name="requestForm" method="post" action="/upa/map/insert" style="margin-bottom: margin-bottom: 80px;">
+	    <div class="container" style="padding: 29px 0px 5px;">
+		    <div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">주차장 이름</label>
+			    <div class="col-sm-4">
+			    	<input type="text" class="form-control" id="name" name="name" value="" placeholder="장소와 관련지어 지어주세요.">
+			    </div>
+		    </div>
+		    <div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">요금</label>
+			    <div class="col-sm-3">
+			    	<input type="text" class="form-control" id="fee" name="fee" value="" placeholder="숫자만 입력">
+			    </div>
+		    </div>
+		    <div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">시작시간</label>
+			    <div class="col-sm-3">
+			    	<div class="form-control-wrapper">
+						<input type="text" name="starttime" id="starttime" class="form-control empty" data-dtp="dtp-gs7M1" placeholder="ex.12:00">
+					</div>
+			    </div>
+		    </div>
+		    <div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">마감시간</label>
+			    <div class="col-sm-3">
+			    	<div class="form-control-wrapper">
+						<input type="text" id="endtime" name="endtime" class="form-control empty" data-dtp="dtp-gs7M1" placeholder="ex.12:00">
+					</div>
+			    </div>
+		    </div>
+		    <div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">주의사항</label>
+			    <div class="col-sm-8">
+			    	<input type="text" class="form-control" id="note" name="note" value="" placeholder="사용할 운전자에게 남기고 싶은 말 있으시면 남겨주세요.">
+			    </div>
+		    </div>
+	    </div>
+		<!-- <div class="input-group clockpicker">
+			<input type="text" class="form-control" value="09:30">
+			<span class="input-group-addon">
+				<span class="glyphicon glyphicon-time"></span>
+			</span>
+		</div> -->
+		
+		<div class="page-header">
+		  <h3>주차장 위치 <small>주차장 위치를 표시</small></h3>
+	    </div>
+	    
+	    <div style="width: 680px; margin: 25px 213px 30px;">
+			<p id="txt3">해당 주소 찾기: &nbsp;</p>
+			<div>
+				<input type="text" id="address" value="" placeholder="지역명 또는 상세주소">
+				<input type="button" id="addressSearch" value="주소 찾기">
+			</div>
+			<p id="searchbottom">※ 지역명 또는 상세 주소를 입력하셔야 합니다. ex) 성결대(x), 만안구 (o), 성결대학로 53 (o)</p>
+			<font name="positionT" id="positionT"></font>
+			<font name="addressT" id="addressT"></font>
+		</div>
+		<div id="map" style="width:80%;height:450px; margin:5px auto;"></div>
 		<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=8b1213d39c6d1ac9748ce62f7bf32852&libraries=services"></script>
 		<script>
-			var container = document.getElementById('maps');
+			var container = document.getElementById('map');
 			var options = {
 				center: new daum.maps.LatLng(37.381896, 126.929920),
 				level: 3
@@ -47,17 +114,73 @@
 			// 지도의 우측에 확대 축소 컨트롤을 추가한다
 			map.addControl(zoomControl, daum.maps.ControlPosition.RIGHT);
 			
-			// 지도를 클릭했을때 클릭한 위치에 마커를 추가하도록 지도에 클릭이벤트를 등록합니다
+			// 주소-좌표 변환 객체를 생성합니다
+			var geocoder = new daum.maps.services.Geocoder();
+
+			var marker = new daum.maps.Marker(), // 클릭한 위치를 표시할 마커입니다
+			infowindow = new daum.maps.InfoWindow({zindex:1}); // 클릭한 위치에 대한 주소를 표시할 인포윈도우입니다
+
+			// 현재 지도 중심좌표로 주소를 검색해서 지도 좌측 상단에 표시합니다
+			searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+
+			// 지도를 클릭했을 때 클릭 위치 좌표에 대한 주소정보를 표시하도록 이벤트를 등록합니다
+			daum.maps.event.addListener(map, 'click', function(mouseEvent) {
+				var positionT = mouseEvent.latLng.toString();
+				$('font[name=positionT]').html(positionT);
+				alert('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.');
+			    searchDetailAddrFromCoords(mouseEvent.latLng, function(status, result) {
+			        if (status === daum.maps.services.Status.OK) {
+			            var detailAddr = !!result[0].roadAddress.name ? '<div>도로명주소 : ' + result[0].roadAddress.name + '</div>' : '';
+			            detailAddr += '<div>지번 주소 : ' + result[0].jibunAddress.name + '</div>';
+			            
+			            $('font[name=addressT]').html(result[0].jibunAddress.name);
+			            
+			            var content = '<div class="bAddr" style="width: 283px;">' +
+			                            '<span class="title">법정동 주소정보</span>' + 
+			                            detailAddr + 
+			                        '</div>';
+						
+			            // 마커를 클릭한 위치에 표시합니다 
+			            marker.setPosition(mouseEvent.latLng);
+			            marker.setMap(map);
+
+			            // 인포윈도우에 클릭한 위치에 대한 법정동 상세 주소정보를 표시합니다
+			            infowindow.setContent(content);
+			            infowindow.open(map, marker);
+			        }   
+			    });
+			});
+
+			// 중심 좌표나 확대 수준이 변경됐을 때 지도 중심 좌표에 대한 주소 정보를 표시하도록 이벤트를 등록합니다
+			daum.maps.event.addListener(map, 'idle', function() {
+			    searchAddrFromCoords(map.getCenter(), displayCenterInfo);
+			});
+
+			function searchAddrFromCoords(coords, callback) {
+			    // 좌표로 행정동 주소 정보를 요청합니다
+			    geocoder.coord2addr(coords, callback);         
+			}
+
+			function searchDetailAddrFromCoords(coords, callback) {
+			    // 좌표로 법정동 상세 주소 정보를 요청합니다
+			    geocoder.coord2detailaddr(coords, callback);
+			}
+
+			// 지도 좌측상단에 지도 중심좌표에 대한 주소정보를 표출하는 함수입니다
+			function displayCenterInfo(status, result) {
+			    if (status === daum.maps.services.Status.OK) {
+			        var infoDiv = document.getElementById('centerAddr');
+			        infoDiv.innerHTML = result[0].fullName;
+			    }    
+			}
+			
+			/* // 지도를 클릭했을때 클릭한 위치에 마커를 추가하도록 지도에 클릭이벤트를 등록합니다
 			daum.maps.event.addListener(map, 'click', function(mouseEvent) {        
 			    // 클릭한 위치에 마커를 표시합니다 
-			    addMarker(mouseEvent.latLng);
 			    alert('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.');
+			    addMarker(mouseEvent.latLng);
 			});
 			
-			/* // 지도에 표시된 마커 객체를 가지고 있을 배열입니다
-			var markers = []; */
-
-
 			// 마커를 생성하고 지도위에 표시하는 함수입니다
 			function addMarker(position) {
 			    
@@ -71,7 +194,7 @@
 			    
 			    // 생성된 마커를 배열에 추가합니다
 			    markers.push(marker);
-			}
+			} */
 
 			/* // 배열에 추가된 마커들을 지도에 표시하거나 삭제하는 함수입니다
 			function setMarkers(map) {
@@ -80,25 +203,24 @@
 			    }            
 			} */
 		</script>
-		
-		<div>
-			<input type="text" id="address" value="">
-			<button id="addSearch">해당 주소 찾기</button>
+		<input type="hidden" value="" id="" name="">
+		<div style="width: 400px; margin: 90px auto;">
+			<input class="btn btn-primary btn-register" type="button" value="등록하기" id="regis">
+			<!-- <input class="btn btn-primary btn-register" type="button" value="취소" id="cancel" src="javascript:history.go(-1);" > -->
+			<a href="javascript:history.go(-1);" id="cancel">취소</a>
 		</div>
-		
-		<div class="input-group clockpicker">
-			<input type="text" class="form-control" value="09:30">
-			<span class="input-group-addon">
-				<span class="glyphicon glyphicon-time"></span>
-			</span>
-		</div>
-		
+		</form>
 		</div>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
+<!-- 주소 검색버튼 -->
 <script>
 $(function() {
-	$("#addSearch").click(function(){
+	
+	$("#positionT").hide();
+	$("#addressT").hide();
+	
+	$("#addressSearch").click(function(){
 		console.log($("#address").val());
 		
 		if($("#address").val() == ""){
@@ -134,6 +256,75 @@ $(function() {
 		});
 		}
 		
+	});
+	
+	$("#regis").on("click",function(){
+		console.log('click');
+		var name = $("#name").val();
+		var fee = $("#fee").val();
+		var starttime = $("#starttime").val();
+		var endtime = $("#endtime").val();
+		var note = $("#note").val();
+		var latitude = $("#positionT").text();
+		var address = $("#addressT").text();
+		
+		console.log("1 "+positionT);
+		
+		console.log(name);
+		console.log("2 "+latitude);
+		
+		//Script 객체
+		var mapVo ={
+			"name": name,
+			"fee": fee,
+			"starttime": starttime,
+			"endtime": endtime,
+			"note": note,
+			"latitude": latitude,
+			"address": address
+		};
+		
+		$.ajax( {
+			url : "insert",
+			type: "POST",
+			data: JSON.stringify(mapVo),	//보냄
+			dataType: "text",
+			contentType: "application/json",
+			success: function(result){	//받아옴
+				alert('성공?');
+				if(result == "false"){
+					console.log(result);
+					alert("실패");
+					return false;s
+				}
+				
+				 if(result == "true"){
+					 alert("성공");
+				} 
+			},
+			error: function( jqXHR, status, error ){
+				console.error( status + " : " + error );
+			}
+		});
+		
+	});
+});
+</script>
+<!-- 시간입력 -->
+<script>
+$(document).ready(function(){
+	$('#starttime').bootstrapMaterialDatePicker
+	({
+		date: false,
+		shortTime: true,
+		format: 'HH:mm'
+	});
+	
+	$('#endtime').bootstrapMaterialDatePicker
+	({
+		date: false,
+		shortTime: true,
+		format: 'HH:mm'
 	});
 });
 </script>

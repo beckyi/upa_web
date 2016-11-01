@@ -34,28 +34,32 @@
 	]]>
 	</select>
 	
-	<!-- 회원정보 수정 -->
+	<!-- 회원정보 수정 비번없음-->
 	<update id="update" parameterType= "uservo">
-		<choose>
-			<when test="#{password == ''}">
-			<![CDATA[
-				update users 
-					set phonenum = #{phonenum },
-					carnum = #{carnum },
-					email = #{email }
-					where no = #{no }
-			]]>
-			</when>
-			<otherwise>
-				<![CDATA[
-				update users 
-					set password = #{password },
-					carnum = #{carnum },
-					phonenum = #{phonenum },
-					email = #{email }
-					where no = #{no }
-			]]>
-			</otherwise>
-		</choose>
+		<![CDATA[
+			update users 
+				set phonenum = #{phonenum },
+				carnum = #{carnum },
+				email = #{email }
+				where no = #{no }
+		]]>
 	</update>
+	
+	<!-- 회원정보 수정 -->
+	<update id="update2" parameterType= "uservo">
+		<![CDATA[
+		update users 
+			set password = #{password },
+			carnum = #{carnum },
+			phonenum = #{phonenum },
+			email = #{email }
+			where no = #{no }
+		]]>
+	</update>
+	
+	<select id="idFind" parameterType="uservo" resultType="string">
+	<![CDATA[
+		select id from users where name=#{name } and  phonenum=#{phonenum }
+	]]>
+</select>
 </mapper>

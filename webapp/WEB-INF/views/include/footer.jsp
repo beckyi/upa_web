@@ -14,7 +14,7 @@
 			<div class="col-md-12">
 				<div class="block">
 					<div class="footer-contant">
-						<h3>Say Hi, Get In Touch</h3>
+						<h3>Utilize Parking Area</h3>
 						<div class="social-icon">
 							<a href="#"><i class="fa fa-facebook"></i></a> <a href="#"><i
 								class="fa fa-tumblr"></i></a> <a href="#"><i

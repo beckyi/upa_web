@@ -6,12 +6,15 @@ public class MapVo {
 	private String longitude;
 	private String name;
 	private String address;
-	private Double starttime;
-	private Double endtime;
+	private String starttime;
+	private String endtime;
 	private Integer state;
 	private String image;
+	private String image2;
+	private String image3;
 	private String master;
 	private Integer fee;
+	private String note;
 	public Long getIndex() {
 		return index;
 	}
@@ -42,16 +45,16 @@ public class MapVo {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public Double getStarttime() {
+	public String getStarttime() {
 		return starttime;
 	}
-	public void setStarttime(Double starttime) {
+	public void setStarttime(String starttime) {
 		this.starttime = starttime;
 	}
-	public Double getEndtime() {
+	public String getEndtime() {
 		return endtime;
 	}
-	public void setEndtime(Double endtime) {
+	public void setEndtime(String endtime) {
 		this.endtime = endtime;
 	}
 	public Integer getState() {
@@ -78,11 +81,30 @@ public class MapVo {
 	public void setFee(Integer fee) {
 		this.fee = fee;
 	}
+	public String getImage2() {
+		return image2;
+	}
+	public void setImage2(String image2) {
+		this.image2 = image2;
+	}
+	public String getImage3() {
+		return image3;
+	}
+	public void setImage3(String image3) {
+		this.image3 = image3;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
+	}
 	
 	@Override
 	public String toString() {
 		return "MapVo [index=" + index + ", latitude=" + latitude + ", longitude=" + longitude + ", name=" + name
 				+ ", address=" + address + ", starttime=" + starttime + ", endtime=" + endtime + ", state=" + state
-				+ ", image=" + image + ", master=" + master + ", fee=" + fee + "]";
+				+ ", image=" + image + ", image2=" + image2 + ", image3=" + image3 + ", master=" + master + ", fee="
+				+ fee + ", note=" + note + "]";
 	}
 }

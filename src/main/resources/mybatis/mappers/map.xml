@@ -8,10 +8,22 @@
 <mapper namespace="map">
 	
 	<!-- 지도 리스트 (메인) -->
-	<select id="getList" resultType="mapvo">
-		<![CDATA[
-		 select * from map
-		]]>
-	</select>
+   <select id="getMapList" resultType="mapvo">
+   <![CDATA[
+    select 
+   		latitude, longitude, name, address, state, fee, note, starttime, endtime
+    from map;
+   ]]>
+   </select>
+   
+   <!-- 검색된 지도 리스트 가져오기 -->
+   	<select id="getMapListKeyword" parameterType="string" resultType="mapvo">
+   <![CDATA[
+ 	select 
+ 		latitude, longitude, name, address, starttime, endtime, state, master, fee, image, note, image2, image3
+ 		from map
+ 	where address like #{keyword}
+   ]]>
+   </select>
 
 </mapper>
