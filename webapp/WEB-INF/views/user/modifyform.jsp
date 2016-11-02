@@ -33,11 +33,28 @@
 	</div>
 	<div class="contentwrap">
 	  <article class="container">
+	  	<div class="page-header">
+		  <h3>이미지 변경 <small>그냥 두시면 변경되지 않고 그대로 있습니다.</small></h3>
+	    </div>
+	    <form class="form-horizontal" id="modify-form" name="modifyForm" method="post" action="/upa/user/modify" enctype="multipart/form-data" style="margin-bottom: 100px;">
+	     <!-- 이미지 삽입 -->
+	     <div class="container" style="padding: 29px 0px 5px;">
+		    <div class="fileinput-button">
+		    <input type="file" name="file" id="file accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))">
+		     <button type="reset" id="filecancel" style="width: 75px; height: 25px; margin-top: 10px; background: #f4f4f4; border: 0.5px solid #bcbcbc; border-radius: 0px; padding: 0px;">취소</button>
+		    </div>
+		    <div id="cma_image" style="width:100%; max-width:100%; text-align: center; display:none;"></div>
+	    </div>
 	    <div class="page-header">
 		  <h3>기본정보 <small>개인정보 수정</small></h3>
 	    </div>
-	    <form class="form-horizontal" id="modify-form" name="modifyForm" method="post" action="/upa/user/modify" style="margin-bottom: 100px;">
 	    <div class="container" style="padding: 29px 0px 5px;">
+	     	<div class="form-group">
+			    <label for="inputNumber" class="col-sm-2 control-label">이름</label>
+			    <div class="col-sm-4">
+			    	<input type="text" class="form-control" id="name" name="name" value="${userVo.name }" placeholder="이름">
+			    </div>
+		    </div>
 		    <div class="form-group">
 			    <label for="inputNumber" class="col-sm-2 control-label">휴대폰번호</label>
 			    <div class="col-sm-4">
@@ -53,7 +70,7 @@
 		    <div class="form-group">
 			    <label for="inputNumber" class="col-sm-2 control-label">이메일</label>
 			    <div class="col-sm-5">
-			    	<input type="text" class="form-control" id="email" name="email" value="${userVo.email }"placeholder="이메일주소">
+			    	<input type="text" class="form-control" id="email" name="email" value="${userVo.email }" placeholder="이메일주소">
 			    </div>
 		    </div>
 	    </div>
@@ -85,8 +102,30 @@
 	</div>
 	<jsp:include page="/WEB-INF/views/include/footer.jsp" />
 </body>
+<!-- 이미지 -->
+<script>
+function getThumbnailPrivew(html, $target) {
+    if (html.files && html.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $target.css('display', '');
+            //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
+            $target.html('<img src="' + e.target.result + '" border="0" alt="" width="300px" height="300px" style="border-radius: 150px;" />');
+        }
+        reader.readAsDataURL(html.files[0]);
+    }
+}
+</script>
 <script>
 $(function() {
+	
+	 //이미지 파일 삽입 취소
+	 $("#filecancel").on("click", function(){
+		console.log('cancel');
+	 /*  	resetFormElement($('#cma_image')); //전달한 양식 초기화 */
+	  /* 	 $('#cma_image').parent().slideUp(); //미리 보기 영역 감춤 */
+	  		 $('#cma_image').hide();
+	 });
 	
 		$('#pass').keydown(function() {
 			$('font[name=passCheck]').html('');
@@ -105,6 +144,13 @@ $(function() {
 		
 		$("#modify-form").submit(function(){
 			console.log("form check");
+			
+			//이름 입력
+			if($("#name").val() == ""){
+				$("#name").focus();
+				sweetAlert("이름은 필수 입력 항목입니다.","Something went wrong", "error");
+				return false;
+			} 
 			
 			//휴대폰
 			var regPhone = /^((01[0|1|6|7|8|9])[1-9]+[0-9]{7,8})|(010[1-9][0-9]{8})$/;

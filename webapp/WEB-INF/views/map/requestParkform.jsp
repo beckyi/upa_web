@@ -25,8 +25,24 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
+	<!-- <div id="back1">
+		<div class="container">
+			<h2 style="margin: 0px auto 50px;">주자장 등록하기</h2>
+		</div>
+	</div> -->
+	<div id="back1">
+		<div class="container">
+			<div id="title1">
+				<h1>UPA 주차장 등록 신청</h1>
+			</div>
+			<div id ="title1_p">
+				<p>안녕하세요, 우선 주차장을 공유해주셔서 감사의 말씀을 드립니다.</p>
+				<p>주차장을 공유해주시면, <em id="emphasis">UPA</em>에서 회원님의 주차장 확인 절차를 거쳐 등록하게 됩니다.</p>
+			</div>
+		</div>
+	</div>
+
 	<div class="container">
-		<h2 style="margin: 0px auto 50px;">주자장 등록하기</h2>
 		 <div class="page-header">
 		  <h3>기본정보 <small>주차장 정보 기입</small></h3>
 	    </div>
@@ -265,13 +281,78 @@ $(function() {
 		var starttime = $("#starttime").val();
 		var endtime = $("#endtime").val();
 		var note = $("#note").val();
-		var latitude = $("#positionT").text();
+		var positionT = $("#positionT").text();
 		var address = $("#addressT").text();
 		
-		console.log("1 "+positionT);
+		/*좌표 글자 자르기*/
+		var positionTA = positionT.substring(1,positionT.length-1);
+		afterStr = positionTA.split(', ');
 		
-		console.log(name);
-		console.log("2 "+latitude);
+		var latitude = afterStr[0];
+		var longitude = afterStr[1];
+		
+		console.log(latitude);
+		console.log(longitude);
+		
+		if(name == ""){
+			$("#name").focus();
+			sweetAlert("주차장 이름을 입력해주세요.","Something went wrong", "error");
+			return false;
+		}
+		
+		regmoney = /^[1-9][0-9]*$/;
+		if(fee == ""){
+			$("#fee").focus();
+			sweetAlert("요금을 입력해주세요.","Something went wrong", "error");
+			return false;
+		} else{
+			if(!regmoney.test($("#fee").val())) { 
+			      $("#fee").focus(); 
+			   		 sweetAlert("요금 입력이\n잘못되었습니다.","Something went wrong", "error");
+		 	     return false; 
+				}
+		}
+		
+		var regtimeRegExp = /^([1-9]|[01][0-9]|2[0-3]):([0-5][0-9])$/;
+		if(starttime == ""){
+			$("#starttime").focus();
+			sweetAlert("시작 시간을 입력해주세요.","Something went wrong", "error");
+			return false;
+		} else{
+			if(!regtimeRegExp.test($("#starttime").val())) { 
+		      $("#starttime").focus(); 
+		   		 sweetAlert("시작시간 입력이\n잘못되었습니다.","Something went wrong", "error");
+	 	     return false; 
+			}
+		}
+		
+		if(endtime == ""){
+			$("#endtime").focus();
+			sweetAlert("끝 시간을 입력해주세요.","Something went wrong", "error");
+			return false;
+		} else{
+			if(!regtimeRegExp.test($("#endtime").val())) { 
+		      $("#endtime").focus(); 
+		   		 sweetAlert("끝 시간 입력이\n잘못되었습니다.","Something went wrong", "error");
+	 	     return false; 
+			}
+		}
+		
+		if($("#starttime").val() == $("#endtime").val()){
+			$("#endtime").focus();
+			sweetAlert("시간이 일치하면 안됩니다.","Something went wrong", "error");
+			return false;
+		}
+		
+		if(positionT ==""){
+			sweetAlert("주차장 위치를 지도에서 클릭해주세요.","Something went wrong", "error");
+			return false;
+		}
+		
+		if(address == ""){
+			sweetAlert("주차장 위치를 지도에서 클릭해주세요.","Something went wrong", "error");
+			return false;
+		}
 		
 		//Script 객체
 		var mapVo ={
@@ -281,6 +362,7 @@ $(function() {
 			"endtime": endtime,
 			"note": note,
 			"latitude": latitude,
+			"longitude" : longitude,
 			"address": address
 		};
 		

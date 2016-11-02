@@ -25,5 +25,7 @@
  	where address like #{keyword}
    ]]>
    </select>
+   
+   <!-- 지도 삽입 -->
 
 </mapper>

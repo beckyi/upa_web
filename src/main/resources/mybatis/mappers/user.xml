@@ -57,6 +57,32 @@
 		]]>
 	</update>
 	
+	<!-- 회원정보 수정 (이미지 O 비번 입력X)-->
+	<update id="update3" parameterType= "uservo">
+		<![CDATA[
+		update users 
+			set
+			carnum = #{carnum },
+			phonenum = #{phonenum },
+			email = #{email },
+			image = #{image}
+			where no = #{no }
+		]]>
+	</update>
+	
+	<!-- 회원정보 수정 (이미지 O, 비번O)-->
+	<update id="update4" parameterType= "uservo">
+		<![CDATA[
+		update users 
+			set password = #{password },
+			carnum = #{carnum },
+			phonenum = #{phonenum },
+			email = #{email },
+			image = #{image}
+			where no = #{no }
+		]]>
+	</update>
+	
 	<!-- 아이디 찾기 -->
 	<select id="idFind" parameterType="uservo" resultType="string">
 	<![CDATA[

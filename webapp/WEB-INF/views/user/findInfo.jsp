@@ -19,19 +19,19 @@
 </head>
 <body>
 	<jsp:include page="/WEB-INF/views/include/subheader.jsp" />
-		<div id="back1">
+	<div id="back1">
 		<div class="container">
-		<div id="title1">
-			<h3>UPA 회원정보 찾기</h3>
+			<div id="title1">
+				<h3>UPA 회원정보 찾기</h3>
+			</div>
+			<div id="title1_p">
+				<p>회원가입 시 입력하셨던 고객님의 소중한 개인정보 인증을 통해 알려드리고 있습니다.</p>
+				<p>
+					<em id="emphasis">UPA</em> 회원이실 경우, 각 해당란에 모두 기입해주십시오.
+				</p>
+			</div>
 		</div>
-		<div id="title1_p">
-			<p>회원가입 시 입력하셨던 고객님의 소중한 개인정보 인증을 통해 알려드리고 있습니다.</p>
-			<p>
-				<em id="emphasis">UPA</em> 회원이실 경우, 각 해당란에 모두 기입해주십시오.
-			</p>
-		</div>
-		</div>
-		</div>
+	</div>
 	<div class="container" style="width:1070px;">
 		<div id="contents">
 			<div class="both left">

@@ -153,7 +153,7 @@
     text-align: center;
     padding: 9px;
 }
-/*상단으로 이동*/
+/*메인 상단으로 이동*/
 #btnTop{
 	display:none;
 	position: fixed;
@@ -166,4 +166,5 @@
     color: #777;
     text-align: center;
     background: #ffffff;
-    border: 0.3px solid;}  
+    border: 0.3px solid;
+}

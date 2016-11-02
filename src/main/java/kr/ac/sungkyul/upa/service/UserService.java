@@ -4,9 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -74,11 +75,45 @@ public class UserService {
 	}
 	
 	// 회원가입
-	public void join(UserVo vo){
+	public void join(UserVo vo, MultipartFile file) throws IOException{
 		//비밀번호 암호화
 		String password = vo.getPassword();
 		password = SHACheckSumExample(password);
 		vo.setPassword(password);
+		
+		//이미지 저장//
+		//3.orgName 
+		String orgName= file.getOriginalFilename();
+		
+		//4.fileSize 
+		Long fileSize = file.getSize();
+		
+		//5.saveName 
+		// (1) Calendar객체를 얻는다.
+		Calendar cal = Calendar.getInstance();
+		// (2) 출력 형태를 지정하기 위해 Formatter를 얻는다.
+		SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddhhmmss");
+		// (3) 출력형태에 맞는 문자열을 얻는다.
+		String datetime1 = sdf1.format(cal.getTime());
+		//현재시간을 이미지이름으로 저장
+		String saveName = datetime1 + orgName;
+		
+		//6.path
+		String path="c:\\upload";
+		
+		AttachFileVo attachFileVo = new AttachFileVo();
+		attachFileVo.setPath(path);
+		attachFileVo.setOrgName(orgName);
+		attachFileVo.setSaveName(saveName);
+		attachFileVo.setFileSize(fileSize);
+		
+		System.out.println(attachFileVo.toString());
+		
+		File target = new File(path,saveName);
+		FileCopyUtils.copy(file.getBytes(), target);
+		
+		//DB에 이미지 저장
+		vo.setImage(saveName);
 		
 		usersdao.insert(vo);
 	}
@@ -90,16 +125,70 @@ public class UserService {
 	}
 	
 	// 회원정보 수정
-	public void update(UserVo vo){ 
+	public void update(UserVo vo, MultipartFile file) throws IOException{ 
+
 		String password = vo.getPassword();
+		System.out.println("야!!!" +password);
 		
-		if(password == ""){
-			usersdao.update(vo);	
+		if(file.getOriginalFilename() == ""){
+			System.out.println("no file");
+			if(password==" "){
+				System.out.println("hehe");
+				usersdao.update(vo);	
+			} else{
+				System.out.println("wuwu");
+				password = SHACheckSumExample(password);
+				vo.setPassword(password);
+				usersdao.update2(vo);
+			}
 		} else{
-			password = SHACheckSumExample(password);
-			vo.setPassword(password);
-			usersdao.update2(vo);
+			System.out.println("yes file");
+			
+			//이미지 저장//
+			//3.orgName 
+			String orgName= file.getOriginalFilename();
+			
+			//4.fileSize 
+			Long fileSize = file.getSize();
+			
+			//5.saveName 
+			// (1) Calendar객체를 얻는다.
+			Calendar cal = Calendar.getInstance();
+			// (2) 출력 형태를 지정하기 위해 Formatter를 얻는다.
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddhhmmss");
+			// (3) 출력형태에 맞는 문자열을 얻는다.
+			String datetime1 = sdf1.format(cal.getTime());
+			//현재시간을 이미지이름으로 저장
+			String saveName = datetime1 + orgName;
+			
+			//6.path
+			String path="c:\\upload\\user";
+			
+			AttachFileVo attachFileVo = new AttachFileVo();
+			attachFileVo.setPath(path);
+			attachFileVo.setOrgName(orgName);
+			attachFileVo.setSaveName(saveName);
+			attachFileVo.setFileSize(fileSize);
+			
+			System.out.println(attachFileVo.toString());
+			
+			File target = new File(path,saveName);
+			FileCopyUtils.copy(file.getBytes(), target);
+			
+			//DB에 이미지 저장
+			vo.setImage(saveName);
+			
+			if(password == ""){
+				System.out.println("1 " +vo.getPassword());
+				usersdao.update3(vo);	
+			} else{
+				System.out.println("2 " +vo.getPassword());
+				password = SHACheckSumExample(password);
+				vo.setPassword(password);
+				usersdao.update4(vo);
+			}
 		}
+		
 	}
 	
 	/*public JFrame imageload(){
@@ -130,10 +219,11 @@ public class UserService {
 		Long fileSize = file.getSize();
 		
 		//5.saveName 
-		String saveName = UUID.randomUUID().toString()+"-"+orgName;
+		/*String saveName = UUID.randomUUID().toString()+"-"+orgName;*/
+		String saveName = "Img" + orgName;
 		
 		//6.path
-		String path="http://220.67.115.35//UPA//MapReg.php";
+		String path="c:\\upload";
 		
 		AttachFileVo attachFileVo = new AttachFileVo();
 		attachFileVo.setPath(path);

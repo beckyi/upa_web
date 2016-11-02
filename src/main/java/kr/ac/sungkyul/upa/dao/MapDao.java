@@ -34,7 +34,12 @@ public class MapDao {
 	//주차장 삽입
 	public Integer insert(MapVo mapvo) {
 	
-		Integer resultInt =sqlSession.insert("map.insert",mapvo);
+//		Integer resultInt = sqlSession.insert("map.insert",mapvo);
+		
+		System.out.println(mapvo.toString());
+		
+		Integer resultInt = 1;
+		
 		return resultInt;
 	}
 }

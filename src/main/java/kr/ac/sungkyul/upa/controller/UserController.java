@@ -1,5 +1,6 @@
 package kr.ac.sungkyul.upa.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 //import java.util.Map;
@@ -24,39 +25,52 @@ public class UserController {
 	
 	@Autowired
 	UserService userservice;
-
+	
+	//테스트
 	@RequestMapping("/text")
 	public String text(){
 		return "user/text";
 	}
 	
+	//가짜 안드로이드 창
+	@RequestMapping("/android")
+	public String android(){
+		return "main/tempAndroid";
+	}
+	
+	//테스트 등록 이미지
+	@RequestMapping(value="register", method=RequestMethod.POST)
+	public void registerBoard(MultipartFile file) throws Exception{
+//		System.out.println(bbsVo.toString());
+//		System.out.println(file.getOriginalFilename());
+		userservice.attach(file);
+		
+	}
+	
+	//회원가입 폼 출력
 	@RequestMapping("/joinform")
 	public String joinform(){
 		return "user/joinform";
 	}
 	
-
-	@RequestMapping("/requestpark")
-	public String requestpark(){
-		return "user/requestPark";
-	}
-	
+	// 회원가입
 	@RequestMapping("/join")
-	public String join(@ModelAttribute UserVo vo){
+	public String join(@ModelAttribute UserVo vo, MultipartFile file) throws IOException{
 		System.out.println("join: "+vo.toString());
-		userservice.join(vo);
+		System.out.println(file.getOriginalFilename());
+		userservice.join(vo, file);
 		return "redirect:/user/joinsuccess";
 	}
 	
-	@ResponseBody	// 아이디 중복 검사
+	// 아이디 중복 검사
+	@ResponseBody	
 	@RequestMapping(value = "CheckEmail", method = RequestMethod.POST)
 	public Map<String, Object> checkEmail(String id) {	//Request 객체받음, script or DB 객체 분별
-		System.out.println(id);
-		
 		Map<String, Object> map = userservice.checkEmail(id);
 		return map;
 	}
 	
+	//회원가입 성공
 	@RequestMapping("/joinsuccess")
 	public String joinSuccess(){
 		return "user/joinsuccess";
@@ -67,10 +81,7 @@ public class UserController {
 	@RequestMapping(value = "checkLogin", method = RequestMethod.POST)
 	public String checkId(String id, String password, HttpSession session) {	//Request 객체받음, script or DB 객체 분별
 		
-		System.out.println("controll "+id+" "+password);
-		
 		UserVo authUser =  userservice.login(id,  password);
-		System.out.println(authUser);
 		
 		String result = "true";
 		
@@ -85,6 +96,7 @@ public class UserController {
 		
 	}
 	
+	//회원 로그아웃
 	@RequestMapping("/logout")
 	public String logout(HttpSession session){
 		session.removeAttribute("authUser");
@@ -93,44 +105,51 @@ public class UserController {
 		return "redirect:/main";
 	}
 	
+	//수정 폼 출력
 	@RequestMapping("/modifyform")
 	public String modifyform(HttpSession session, Model model){
+		//로그인한 회원정보 가져오기
 		UserVo temp = (UserVo)session.getAttribute("authUser");
-		
 		Long no = temp.getNo();
 		
+		//수정폼 출력 시 입력된 내용 출력
 		UserVo nvo = userservice.get(no);
 		model.addAttribute("userVo", nvo);
 		
 		return "user/modifyform";
 	}
 	
+	//회원 정보 수정
 	@RequestMapping("/modify")
-	public String modify(HttpSession session, @ModelAttribute UserVo vo){
+	public String modify(HttpSession session, @ModelAttribute UserVo vo, MultipartFile file) throws IOException{
+		System.out.println(file.getOriginalFilename());
 		
 		UserVo temp = (UserVo)session.getAttribute("authUser");
 		Long no = temp.getNo();
 		
 		vo.setNo(no);
 		
-		userservice.update(vo);
+		userservice.update(vo,file);
 		return "user/modifysuccess";
 	}
 	
+	//파일 업로드
 	@RequestMapping(value="attach", method=RequestMethod.POST)
-	public String registerBoard(MultipartFile file) throws Exception{
+	public String attachBoard(MultipartFile file) throws Exception{
 //		System.out.println(file.getOriginalFilename());
 		userservice.attach(file);
 		
 		return "redirect:/main";
 	}
 	
-	@RequestMapping("/findInfo")	//찾기 폼
+	//아이디/비밀번호 찾기 폼
+	@RequestMapping("/findInfo")	
 	public String findInfo(){
 		return "user/findInfo";
 	}
 	
-	@RequestMapping("/idFind")	// 아이디 찾기
+	// 아이디 찾기
+	@RequestMapping("/idFind")	
 	public String idFind(@ModelAttribute UserVo vo, Model model){
 
 		String id = userservice.idfind(vo);
@@ -144,10 +163,13 @@ public class UserController {
 		model.addAttribute("id",id);
 		return "user/idresult";
 	}
-//		
+	
+	//비밀번호 찾기
 	@ResponseBody
-	@RequestMapping(value = "checkPass", method = RequestMethod.POST)	//비밀번호 찾기 검사
+	@RequestMapping(value = "checkPass", method = RequestMethod.POST)	
 	public String checkPass(@RequestBody UserVo userVo, HttpSession session) {	//Request 객체받음, script or DB 객체 분별
+		
+		//회원 정보가 있는지 확인
 		UserVo temp = userservice.checkPass(userVo);
 		
 		Long no = temp.getNo();
@@ -171,7 +193,8 @@ public class UserController {
 		return result;
 	}
 	
-	@RequestMapping("/passresult")	//메일 전송 완료
+	//메일 전송 완료 (임시 비밀번호 전송)
+	@RequestMapping("/passresult")	
 	public String passResult(){
 		return "user/passresult";
 	}

@@ -12,6 +12,10 @@
 <script type="text/javascript" src="/upa/assets/js/moment-with-locales.min.js"></script>
 <script type="text/javascript" src="/upa/assets/js/bootstrap-material-datetimepicker.js"></script>
 
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" rel="stylesheet" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+
 <!-- <script src="/upa/theme/js/bootstrap.min.js"></script> -->
 <!-- <script type="text/javascript" src="/upa/assets/js/material.min.js"></script> -->
 <head>
@@ -109,14 +113,8 @@
 	        overImage = createMarkerImage(overMarkerSize, overMarkerOffset, overOrigin),
 	        clickImage = createMarkerImage(markerSize, markerOffset, clickOrigin); */
 	</script>
-	<h2>파일 서버 업로드</h2>
-	<div>
-		<h3>첨부파일</h3>
-		<form class="board-form" method="post" action="/upa/user/attach" enctype="multipart/form-data">
-		<input type="file" name="file">
-		<input type="submit" value="등록">
-		</form>
-	</div>
+	
+	<div style="height:300px;"></div>
 
 		 <div class="form-group">
 		    <label for="inputNumber" class="col-sm-2 control-label">시작시간</label>
@@ -126,11 +124,83 @@
 				</div>
 		    </div>
 	    </div>
-	<div>
-		<img>
-	</div>    
-	<div id="cma_image" style="width:95%; max-width:100%; border:1px solid #c0c0c0;display:none;"></div>
+	    
+    <div style="height:300px;"></div>
+		<h2>파일 서버 업로드</h2>
+		<div>
+		<h3>첨부파일</h3>
+		<form class="board-form" method="post" action="/upa/user/attach" enctype="multipart/form-data">
+		<input type="file" name="file">
+		<input type="submit" value="등록">
+	</form>
+	</div>
+	    
+	    <div style="height:300px;"></div>
+	<form class="img-form" method="post" action="/upa/user/register" enctype="multipart/form-data">
+	
+	
+	<div  style="background=#fff; width:300px; height:300px; border:1px solid #c0c0c0; border-radius: 250px; display:none;"></div>
+	<div id="cma_image" style="width:300px; height:300px; border:1px solid #c0c0c0; border-radius: 250px; display:none;"></div>
 	<input type="file" name="file" id="file accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))">
+	<input type="submit" value="이미지등록">
+	</form>
+	
+	
+	<div style="height:300px;"></div>
+	
+	<!-- IMAGE SLIDER -->
+	<div id="myCarousel" class="carousel slide" data-ride="carousel"> 
+	
+	<!--페이지-->
+	<ol class="carousel-indicators">
+		<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		<li data-target="#myCarousel" data-slide-to="1"></li>
+		<li data-target="#myCarousel" data-slide-to="2"></li>
+	</ol>
+	<!--페이지-->
+
+	<div class="carousel-inner">
+		<!--슬라이드1-->
+		<div class="item active"> 
+			<img src="http://www.blueb.co.kr/SRC2/_image/w01.jpg" style="width:100%" alt="First slide">
+			<div class="container">
+				<div class="carousel-caption">
+					<h1>Slide 1</h1>
+					<p>텍스트 1</p>
+				</div>
+			</div>
+		</div>
+		<!--슬라이드1-->
+
+		<!--슬라이드2-->
+		<div class="item"> 
+			<img src="http://www.blueb.co.kr/SRC2/_image/w02.jpg" style="width:100%" data-src="" alt="Second slide">
+			<div class="container">
+				<div class="carousel-caption">
+					<h1>Slide 2</h1>
+					<p>텍스트 2</p>
+				</div>
+			</div>
+		</div>
+		<!--슬라이드2-->
+		
+		<!--슬라이드3-->
+		<div class="item"> 
+			<img src="http://www.blueb.co.kr/SRC2/_image/w03.jpg" style="width:100%" data-src="" alt="Third slide">
+			<div class="container">
+				<div class="carousel-caption">
+					<h1>Slide 3</h1>
+					<p>텍스트 3</p>
+				</div>
+			</div>
+		</div>
+		<!--슬라이드3-->
+	</div>
+	
+	<!--이전, 다음 버튼-->
+	<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
+	<a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a> 
+</div>
 	
 </body>
 <script>
@@ -151,7 +221,7 @@ function getThumbnailPrivew(html, $target) {
         reader.onload = function (e) {
             $target.css('display', '');
             //$target.css('background-image', 'url(\"' + e.target.result + '\")'); // 배경으로 지정시
-            $target.html('<img src="' + e.target.result + '" border="0" alt="" width="300px" height="300px" />');
+            $target.html('<img src="' + e.target.result + '" border="0" alt="" width="300px" height="300px" style="border-radius: 150px;" />');
         }
         reader.readAsDataURL(html.files[0]);
     }

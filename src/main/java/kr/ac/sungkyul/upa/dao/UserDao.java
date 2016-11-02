@@ -49,6 +49,14 @@ public class UserDao {
 	public void update2(UserVo vo){
 		sqlSession.update("user.update2",vo);	
 	}
+	//회원정보 수정 3 (이미지 O 비번 입력X)
+	public void update3(UserVo vo){
+		sqlSession.update("user.update3",vo);	
+	}
+	//회원정보 수정 4 (이미지 O 비번 입력O)
+	public void update4(UserVo vo){
+		sqlSession.update("user.update4",vo);	
+	}
 	
 	public void insertAttachFile(AttachFileVo vo){
 		/*sqlSession.insert("user.attach",vo);*/		

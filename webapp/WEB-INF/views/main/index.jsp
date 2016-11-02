@@ -51,7 +51,9 @@
 								시간 낭비, 연료 낭비, 올라가는 짜증 게이지.. 이젠 걱정마세요!<br> 
 								netus et malesuada fames ac turpis egestas.
 							</p>
+							<a href="user/android">
 							<button type="button" class="btn btn-default edit-button-1">DOWNLOAD</button>
+							</a>
 							<a href="user/text" style="cursor:default;">
 					    	<button id="regipark" type="button" class="btn btn-default edit-button-3">
 							주차장 등록
@@ -244,7 +246,7 @@
 		<script>
 			var container = document.getElementById('maps');
 			var options = {
-				center: new daum.maps.LatLng(37.381896, 126.929920),
+				center: new daum.maps.LatLng(37.38267507910905, 126.93010673850615),
 				/* center: new daum.maps.LatLng(37.533025, 126.951791), */
 				level: 3
 			};
@@ -269,7 +271,7 @@
 			// 지도 클릭 이벤트를 등록한다 (좌클릭 : click, 우클릭 : rightclick, 더블클릭 : dblclick)
 			daum.maps.event.addListener(map, 'rightclick', function (mouseEvent) {
 				alert('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.');
-			});	
+			});
 			
 			/* // 지도에 마커를 생성하고 표시한다
 			var marker = new daum.maps.Marker({
@@ -295,15 +297,12 @@
 				   latlng: new daum.maps.LatLng('${vo.latitude}', '${vo.longitude}')
 				},
 				</c:forEach>
-				{
-			        content: '<div>집앞 주차장1</div>', 
-			        latlng: new daum.maps.LatLng(37.3800181, 126.9264755)
-			    }
 			];
 
 			for (var i = 0; i < positions.length; i ++) {
 			    // 마커를 생성합니다
 			    var marker = new daum.maps.Marker({
+			    	myid : i,
 			        position: positions[i].latlng, // 마커의 위치
 			        map: map // 마커를 표시할 지도
 			    });
@@ -319,11 +318,18 @@
 			    daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 			    daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 			    
-			 // 마커에 클릭 이벤트를 등록한다 (우클릭 : rightclick)
-				daum.maps.event.addListener(marker, 'click', function() {
-					console.log('click');
-				    $('div#rpModal').modal();	//주차장 정보 창 띄우기
-				});
+				console.log("i "+i)
+				<c:forEach var = 'vo' items='${list}' varStatus='status'>
+					if('${status.index}' == i){	
+						console.log('${status.count}');
+						console.log('${vo.name}');
+						console.log("i "+i)
+						daum.maps.event.addListener(marker, 'click', function() {
+								console.log('click');
+							    $('div#rpModal${status.index}').modal();	//주차장 정보 창 띄우기
+						});
+					}
+			    </c:forEach>
 			}
 
 			// 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
@@ -581,37 +587,96 @@
             r.parentNode.insertBefore(e,r)}(window,document,'script','ga'));
             ga('create','UA-XXXXX-X');ga('send','pageview');
         </script> -->
-        
-        <!-- 모달 팝업 -->
-	<div class="modal fade" id="rpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+     <c:forEach var = 'vo' items='${list}' varStatus='status'>   
+     <!-- 모달 팝업 -->
+	<div class="modal fade" id="rpModal${status.index}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	  <div class="modal-dialog" style="width: 1500px; margin: 60px auto;">
 	    <div class="modal-content">
 	      <div class="modal-header" style="padding-left: 23px;background: #555;">
 			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true" style="color:white;">×</span><span class="sr-only">Close</span></button>
-			<h3 class="modal-title" id="myModalLabel" style="color:white;">UPA 주차장 정보 ${vo.latitude}</h3>
+			<h3 class="modal-title" id="myModalLabel" style="color:white;">UPA 주차장 기본 정보 </h3>
 	      </div>
-	      <div class="modal-body" style="height:530px;">
+	      <div class="modal-body" style="height:552px;">
 					<div style="margin-bottom:20px;">
-						<h5>안녕하세요. UPA 회원님이 공유해주신 주차장입니다.</h5>
+						<h5>안녕하세요. UPA 회원님이 공유해주신 주차장입니다. <i style="color: #999; font-style: initial;">&nbsp;※ 주차장 사용 및 결제는 애플리케이션에서만 지원합니다.</i></h5>
 					</div>
 					<div class="col-sm-6">
-						<img src="/upa/assets/images/parking/ex01.jpg">
+						<!-- <img src="/upa/assets/images/parking/ex01.jpg"> -->
+						<div id="myCarousel" class="carousel slide" data-ride="carousel"> 
+						<!--페이지-->
+						<ol class="carousel-indicators">
+							<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+							<li data-target="#myCarousel" data-slide-to="1"></li>
+							<li data-target="#myCarousel" data-slide-to="2"></li>
+						</ol>
+						<!--페이지-->
+						
+						<div class="carousel-inner">
+							<!--슬라이드1-->
+							<c:forEach var="i" begin="1" end="3" varStatus="status">
+							<c:choose>
+							<c:when test="${status.index == 1}">
+							<div class="item active"> 
+								<img src="/upa/assets/images/parking/ex0${status.index}.jpg" style="width:100%; height: 455px;" alt="First slide">
+								<div class="container">
+									<div class="carousel-caption">
+										<!-- <h1>Slide 1</h1>
+										<p>텍스트 1</p> -->
+									</div>
+								</div>
+							</div>
+							<!--슬라이드1-->
+							</c:when>
+							<c:otherwise>
+							<!--슬라이드2-->
+							<div class="item"> 
+								<img src="/upa/assets/images/parking/ex02.jpg" style="width:100%; height: 455px;" data-src="" alt="Second slide">
+								<div class="container">
+									<!--<div class="carousel-caption">
+										<h1>Slide 2</h1>
+										<p>텍스트 2</p>
+									</div> -->
+								</div>
+							</div>
+							</c:otherwise>
+							</c:choose>
+							</c:forEach>
+							<!-- 슬라이드2 -->
+							
+							<!-- 슬라이드3
+							<div class="item"> 
+								<img src="/upa/assets/images/parking/ex03.jpg" style="width:100%; height: 455px;" data-src="" alt="Third slide">
+								<div class="container">
+									<div class="carousel-caption">
+										<h1>Slide 3</h1>
+										<p>텍스트 3</p>
+									</div>
+								</div>
+							</div>
+							슬라이드3 -->
+						</div>
+						
+						<!--이전, 다음 버튼-->
+						<!-- <a class="left carousel-control" href="#myCarousel" data-slide="prev"><span class="glyphicon glyphicon-chevron-left"></span></a> 
+						<a class="right carousel-control" href="#myCarousel" data-slide="next"><span class="glyphicon glyphicon-chevron-right"></span></a> --> 
+					</div>
 					</div>
 					<div class="col-sm-6">
-						<h1 style="margin-top:6px;margin-bottom: 20px;">주차장 이름</h1>
+						<h1 style="margin-top:24px;margin-bottom: 23px;"> ${vo.name}</h1>
 						<div  id="bottomline"></div>
 						<div class="tempoar">
-							<h3>주소: 서울시 만안구 성결대학로 58</h3>
-							<h3>요금: 1500원(1시간당)</h3>
-							<h3>현재 사용 가능 상태 : 가능</h3>
-							<h3>제공 가능 시간: 10:00 am ~ 18:00 pm</h3>
+							<h3>주소:  ${vo.address}</h3>
+							<h3>요금:  ${vo.fee}원&nbsp;(시간당)</h3>
+						<%-- 	<h3>현재 사용 가능 상태 :  ${vo.state}</h3> --%>
+							<h3>제공 가능 시간:  ${fn:substring(vo.starttime,0,5)} ~  ${fn:substring(vo.endtime,0,5)}</h3>
 						</div>
 						<h3>주의사항</h3>
 						<div id="park_note">
-						<h4>주의사항</h4>
+						<h4> ${vo.note}</h4>
 						</div>
 					</div>
-	      </div>
+					<img src="/upa/assets/images/main/car-side.png" style="position: absolute; right: 19px; bottom: -18px;">
+	      	</div>
 	      <div class="modal-footer" style="text-align: center;">
 			<div>
 				<p style="margin: 0px;">Copyright © 2016.Utilize Parking Area. All rights reserved</p>
@@ -620,7 +685,7 @@
 	    </div>
 	  </div>
 	</div>
-	
+	</c:forEach>
 <script>
 $(function() {
 	
