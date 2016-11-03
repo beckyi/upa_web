@@ -43,21 +43,21 @@
 					<div class="slider-text-area">
 						<div class="slider-text">
 							<h2>
-								Help your Parking Lot<br>
+								Give help to the parking.<br>
 							</h2>
-							<p class="sub-slider-text">Duis bibendum diam</p>
+							<p class="sub-slider-text" style="color: white;">More Useful Parkgin Lot</p>
 							<p class="slider-p">
 								그 동안 주차 공간을 찾기 위해 많이 헤메시느라 고생하셨죠..<br>
-								시간 낭비, 연료 낭비, 올라가는 짜증 게이지.. 이젠 걱정마세요!<br> 
-								netus et malesuada fames ac turpis egestas.
+								시간 낭비, 연료 낭비, 주차로 인한 스트레스 이젠 걱정마세요!<br> 
+								이제 더 이상 불법 주차가 아닌 정당한 권리로 주차해요!!!
 							</p>
 							<a href="user/android">
-							<button type="button" class="btn btn-default edit-button-1">DOWNLOAD</button>
+							<button type="button" class="btn btn-default edit-button-1" style="Sborder: 3px solid #FFFFFF;">DOWNLOAD</button>
 							</a>
-							<a href="user/text" style="cursor:default;">
+							<!-- <a href="user/text" style="cursor:default;">
 					    	<button id="regipark" type="button" class="btn btn-default edit-button-3">
 							주차장 등록
-							</button></a>
+							</button></a> -->
 						</div>
 					</div>
 				</div>
@@ -177,7 +177,7 @@
 	</section>	<!-- #service close -->
 
 	<!-- contant-1 start -->
-	<section id="contant-1">
+	<section id="contant-1" style="padding-top: 37px;">
 	<div class="container">
 		<div class="row">
 			<div class="col-md-6">
@@ -613,11 +613,8 @@
 						
 						<div class="carousel-inner">
 							<!--슬라이드1-->
-							<c:forEach var="i" begin="1" end="3" varStatus="status">
-							<c:choose>
-							<c:when test="${status.index == 1}">
 							<div class="item active"> 
-								<img src="/upa/assets/images/parking/ex0${status.index}.jpg" style="width:100%; height: 455px;" alt="First slide">
+								<img src="http://220.67.115.35/UPA/Images/${vo.image}" style="width:100%; height: 455px;" alt="First slide">
 								<div class="container">
 									<div class="carousel-caption">
 										<!-- <h1>Slide 1</h1>
@@ -626,8 +623,6 @@
 								</div>
 							</div>
 							<!--슬라이드1-->
-							</c:when>
-							<c:otherwise>
 							<!--슬라이드2-->
 							<div class="item"> 
 								<img src="/upa/assets/images/parking/ex02.jpg" style="width:100%; height: 455px;" data-src="" alt="Second slide">
@@ -638,22 +633,19 @@
 									</div> -->
 								</div>
 							</div>
-							</c:otherwise>
-							</c:choose>
-							</c:forEach>
 							<!-- 슬라이드2 -->
 							
-							<!-- 슬라이드3
+							<!-- 슬라이드3 -->
 							<div class="item"> 
 								<img src="/upa/assets/images/parking/ex03.jpg" style="width:100%; height: 455px;" data-src="" alt="Third slide">
 								<div class="container">
 									<div class="carousel-caption">
-										<h1>Slide 3</h1>
-										<p>텍스트 3</p>
+										<!-- <h1>Slide 3</h1>
+										<p>텍스트 3</p> -->
 									</div>
 								</div>
 							</div>
-							슬라이드3 -->
+							<!-- 슬라이드3 -->
 						</div>
 						
 						<!--이전, 다음 버튼-->
@@ -689,7 +681,6 @@
 <script>
 $(function() {
 	
-	console.log('read?');
 	$("#addSearch").click(function(){
 		console.log('click');
 		console.log($("#keyword").val());
@@ -730,6 +721,9 @@ $(function() {
 		
 	});
 });
+</script>
+<script>
+	$('.carousel').carousel({ interval:3000 });
 </script>
 </body>
 </html>

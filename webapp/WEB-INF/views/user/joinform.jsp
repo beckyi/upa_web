@@ -41,6 +41,7 @@
 	     <div class="container" style="padding: 29px 0px 5px;">
 		    <div class="fileinput-button">
 		    <input type="file" name="file" id="file accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))">
+		    <button type="reset" id="filecancel" style="width: 75px; height: 25px; margin-top: 10px; background: #f4f4f4; border: 0.5px solid #bcbcbc; border-radius: 0px; padding: 0px;">취소</button>
 		    </div>
 		  <!--   <div id="tempuser" style="width:100%; text-align:center;">
 		    	<img src="/upa/assets/images/user/tempuser.png" style="widht:289px;">
@@ -183,6 +184,14 @@ function getThumbnailPrivew(html, $target) {
 <!-- 회원가입 버튼 -->
 <script>
 $(function() {
+	
+	 //이미지 파일 삽입 취소
+	 $("#filecancel").on("click", function(){
+		console.log('cancel');
+	 /*  	resetFormElement($('#cma_image')); //전달한 양식 초기화 */
+	  /* 	 $('#cma_image').parent().slideUp(); //미리 보기 영역 감춤 */
+	  		 $('#cma_image').hide();
+	 });
 	
 	var flag_validation = false;
 	

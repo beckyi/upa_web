@@ -10,9 +10,9 @@
 	<!-- 지도 리스트 (메인) -->
    <select id="getMapList" resultType="mapvo">
    <![CDATA[
-    select 
-   		latitude, longitude, name, address, state, fee, note, starttime, endtime
-    from map;
+	    select 
+	   		latitude, longitude, name, address, state, fee, note, starttime, endtime, image
+	    from map;
    ]]>
    </select>
    
@@ -27,5 +27,10 @@
    </select>
    
    <!-- 지도 삽입 -->
-
+	<!-- 회원가입 -->
+	<insert id="insert" parameterType="mapvo">
+		<![CDATA[
+			insert into map (latitude, longitude, name, address, starttime, endtime, image, image2, image3, master, fee ,note) values (#{latitude}, #{longitude}, #{name}, #{address}, #{starttime}, #{endtime}, #{image}, #{image2}, #{image3}, #{master}, #{fee}, #{note})
+		]]>
+	</insert>
 </mapper>

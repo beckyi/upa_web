@@ -81,6 +81,53 @@ public class UserService {
 		password = SHACheckSumExample(password);
 		vo.setPassword(password);
 		
+		//DB에 이미지 이름 저장
+		String saveName = attach(file);
+		vo.setImage(saveName);
+		
+		usersdao.insert(vo);
+	}
+	
+	//회원정보 수정 시 정보 출력
+	public UserVo get(Long no){	
+		UserVo uservo = usersdao.get(no);
+		return uservo;
+	}
+	
+	// 회원정보 수정
+	public void update(UserVo vo, MultipartFile file) throws IOException{ 
+
+		String password = vo.getPassword();
+		
+		if(file.getOriginalFilename() == ""){
+			System.out.println("no file");
+//			if(password==" "){
+//				System.out.println("hehe");
+//				usersdao.update(vo);	
+//			} else{
+//				System.out.println("wuwu");
+				password = SHACheckSumExample(password);
+				vo.setPassword(password);
+				usersdao.update2(vo);
+//			}
+		} else{
+			System.out.println("yes file");
+			
+			//DB에 이미지 이름 저장
+			String saveName = attach(file);
+			vo.setImage(saveName);
+			
+//			if(password == ""){
+//				usersdao.update3(vo);	
+//			} else{
+				password = SHACheckSumExample(password);
+				vo.setPassword(password);
+				usersdao.update4(vo);
+//			}
+		}
+	}
+	
+	public String attach(MultipartFile file) throws IOException{
 		//이미지 저장//
 		//3.orgName 
 		String orgName= file.getOriginalFilename();
@@ -99,7 +146,7 @@ public class UserService {
 		String saveName = datetime1 + orgName;
 		
 		//6.path
-		String path="c:\\upload";
+		String path="c:\\upload\\user";
 		
 		AttachFileVo attachFileVo = new AttachFileVo();
 		attachFileVo.setPath(path);
@@ -112,131 +159,7 @@ public class UserService {
 		File target = new File(path,saveName);
 		FileCopyUtils.copy(file.getBytes(), target);
 		
-		//DB에 이미지 저장
-		vo.setImage(saveName);
-		
-		usersdao.insert(vo);
-	}
-	
-	//회원정보 수정 시 정보 출력
-	public UserVo get(Long no){	
-		UserVo uservo = usersdao.get(no);
-		return uservo;
-	}
-	
-	// 회원정보 수정
-	public void update(UserVo vo, MultipartFile file) throws IOException{ 
-
-		String password = vo.getPassword();
-		System.out.println("야!!!" +password);
-		
-		if(file.getOriginalFilename() == ""){
-			System.out.println("no file");
-			if(password==" "){
-				System.out.println("hehe");
-				usersdao.update(vo);	
-			} else{
-				System.out.println("wuwu");
-				password = SHACheckSumExample(password);
-				vo.setPassword(password);
-				usersdao.update2(vo);
-			}
-		} else{
-			System.out.println("yes file");
-			
-			//이미지 저장//
-			//3.orgName 
-			String orgName= file.getOriginalFilename();
-			
-			//4.fileSize 
-			Long fileSize = file.getSize();
-			
-			//5.saveName 
-			// (1) Calendar객체를 얻는다.
-			Calendar cal = Calendar.getInstance();
-			// (2) 출력 형태를 지정하기 위해 Formatter를 얻는다.
-			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddhhmmss");
-			// (3) 출력형태에 맞는 문자열을 얻는다.
-			String datetime1 = sdf1.format(cal.getTime());
-			//현재시간을 이미지이름으로 저장
-			String saveName = datetime1 + orgName;
-			
-			//6.path
-			String path="c:\\upload\\user";
-			
-			AttachFileVo attachFileVo = new AttachFileVo();
-			attachFileVo.setPath(path);
-			attachFileVo.setOrgName(orgName);
-			attachFileVo.setSaveName(saveName);
-			attachFileVo.setFileSize(fileSize);
-			
-			System.out.println(attachFileVo.toString());
-			
-			File target = new File(path,saveName);
-			FileCopyUtils.copy(file.getBytes(), target);
-			
-			//DB에 이미지 저장
-			vo.setImage(saveName);
-			
-			if(password == ""){
-				System.out.println("1 " +vo.getPassword());
-				usersdao.update3(vo);	
-			} else{
-				System.out.println("2 " +vo.getPassword());
-				password = SHACheckSumExample(password);
-				vo.setPassword(password);
-				usersdao.update4(vo);
-			}
-		}
-		
-	}
-	
-	/*public JFrame imageload(){
-		Image image = null;
-        try {
-            URL url = new URL("http://220.67.115.35/UPA/UserImages/20161025010115.png");
-            image = ImageIO.read(url);
-        } catch (IOException e) {
-        	e.printStackTrace();
-        }
-
-        JFrame frame = new JFrame();
-        frame.setSize(300, 300);
-        JLabel label = new JLabel(new ImageIcon(image));
-        frame.add(label);
-        frame.setVisible(true);
-        
-        return frame;
-	}*/
-	
-	public void attach(MultipartFile file) throws IOException{
-		//1. fno: 저장할때
-		
-		//3.orgName 
-		String orgName= file.getOriginalFilename();
-		
-		//4.fileSize 
-		Long fileSize = file.getSize();
-		
-		//5.saveName 
-		/*String saveName = UUID.randomUUID().toString()+"-"+orgName;*/
-		String saveName = "Img" + orgName;
-		
-		//6.path
-		String path="c:\\upload";
-		
-		AttachFileVo attachFileVo = new AttachFileVo();
-		attachFileVo.setPath(path);
-		attachFileVo.setOrgName(orgName);
-		attachFileVo.setSaveName(saveName);
-		attachFileVo.setFileSize(fileSize);
-		
-		System.out.println(attachFileVo.toString());
-//				System.out.println("service: "+bbsVo.toString());
-		/*usersdao.insertAttachFile(attachFileVo);*/
-		
-		File target = new File(path,saveName);
-		FileCopyUtils.copy(file.getBytes(), target);
+		return saveName;
 	}
 	
 	//아이디찾기

@@ -130,7 +130,7 @@
 		<div>
 		<h3>첨부파일</h3>
 		<form class="board-form" method="post" action="/upa/user/attach" enctype="multipart/form-data">
-		<input type="file" name="file">
+		 <input multiple="multiple" type="file" name="filename[]" />
 		<input type="submit" value="등록">
 	</form>
 	</div>
@@ -141,10 +141,84 @@
 	
 	<div  style="background=#fff; width:300px; height:300px; border:1px solid #c0c0c0; border-radius: 250px; display:none;"></div>
 	<div id="cma_image" style="width:300px; height:300px; border:1px solid #c0c0c0; border-radius: 250px; display:none;"></div>
-	<input type="file" name="file" id="file accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))">
+	<input type="file" name="file" multiple="multiple" id="file accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))">
 	<input type="submit" value="이미지등록">
 	</form>
+		<div style="height:300px;"></div>
 	
+	<script language="javascript">
+	 var count = 1;
+	 var addCount;
+	 
+	//행추가
+	function addInputBox() {
+	 for(var i=1; i<=count; i++) {
+	  if(!document.getElementsByName("test"+i)[0]) {
+	   addCount = i;
+	   break;
+	  }
+	  else addCount = count;
+	 }
+	
+	 var addStr = "<tr><td width=40><input type=checkbox name=checkList value="+addCount+" size=40 ></td><td width=140><input type=file name=test"+addCount+" size=40></td></tr>";
+	 var table = document.getElementById("dynamic_table");
+	 var newRow = table.insertRow();
+	 var newCell = newRow.insertCell();
+	 newCell.innerHTML = addStr;
+	 count++;
+	}
+	 
+	//행삭제
+	function subtractInputBox() {
+	 var table = document.getElementById("dynamic_table");
+	 //var max = document.gForm.checkList.length;
+	 //alert(max);
+	 var rows = dynamic_table.rows.length;
+	 var chk = 0;
+	 if(rows > 1){
+	  for (var i=0; i<document.gForm.checkList.length; i++) {
+	   if (document.gForm.checkList[i].checked == true) {
+	    table.deleteRow(i);
+	    i--;
+	    count--;
+	    chk++;
+	   }
+	  }
+	  if(chk <= 0){
+	   alert("삭제할 행을 체크해 주세요.");
+	  }
+	   }else{
+	    alert("더이상 삭제할 수 없습니다.");
+	   }
+	}
+	 
+	function submitbutton() {
+	 var gform = document.gForm;
+	 gform.count.value = eval(count);
+	 //alert(count);
+	 gForm.submit();
+	 return;
+	}
+</script>
+	<input type="button" value="행 추가" onclick="javascript:addInputBox();"> : <input type="button" value="행 삭제" onclick="javascript:subtractInputBox();"><br><br>
+	<input type="button" value="전송" onclick="javascript:submitbutton();">
+	<form name="gForm" action="upload.do" enctype="multipart/form-data" method="post" >
+	  <input type="hidden" name="count" >
+	   
+	<table cellpadding=0 cellspacing=0 id="" border="1">
+	<tr>
+	 <td width="40">체크</td>
+	 <td width="160">내용</td>
+	</tr>
+	<tr>
+	<table cellpadding="0" cellspacing="0" id="dynamic_table" border="1">
+		<tr><td width=40><input type=checkbox name=checkList value="+addCount+" size=40 ></td><td width=140><input type=file name=test"+addCount+" size=40></td></tr>
+		<tr><td width=40><input type=checkbox name=checkList value="+addCount+" size=40 ></td><td width=140><input type=file name=test"+addCount+" size=40></td></tr>
+		<tr><td width=40><input type=checkbox name=checkList value="+addCount+" size=40 ></td><td width=140><input type=file name=test"+addCount+" size=40></td></tr>
+	</table>
+	</tr>
+	</table>
+	</form>
 	
 	<div style="height:300px;"></div>
 	
@@ -162,7 +236,7 @@
 	<div class="carousel-inner">
 		<!--슬라이드1-->
 		<div class="item active"> 
-			<img src="http://www.blueb.co.kr/SRC2/_image/w01.jpg" style="width:100%" alt="First slide">
+			<img src="http://220.67.115.35/UPA/Images/201610310309481.png"  style="width:100%; height: 455px;" alt="First slide">
 			<div class="container">
 				<div class="carousel-caption">
 					<h1>Slide 1</h1>
@@ -174,7 +248,7 @@
 
 		<!--슬라이드2-->
 		<div class="item"> 
-			<img src="http://www.blueb.co.kr/SRC2/_image/w02.jpg" style="width:100%" data-src="" alt="Second slide">
+			<img src="http://220.67.115.35/UPA/Images/1452976542259s.jpg" style="width:100%; height: 455px;" data-src="" alt="Second slide">
 			<div class="container">
 				<div class="carousel-caption">
 					<h1>Slide 2</h1>

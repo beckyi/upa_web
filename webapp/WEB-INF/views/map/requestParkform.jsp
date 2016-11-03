@@ -143,7 +143,7 @@
 			daum.maps.event.addListener(map, 'click', function(mouseEvent) {
 				var positionT = mouseEvent.latLng.toString();
 				$('font[name=positionT]').html(positionT);
-				alert('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.');
+				/* alert('지도에서 클릭한 위치의 좌표는 ' + mouseEvent.latLng.toString() + ' 입니다.'); */
 			    searchDetailAddrFromCoords(mouseEvent.latLng, function(status, result) {
 			        if (status === daum.maps.services.Status.OK) {
 			            var detailAddr = !!result[0].roadAddress.name ? '<div>도로명주소 : ' + result[0].roadAddress.name + '</div>' : '';
@@ -219,7 +219,46 @@
 			    }            
 			} */
 		</script>
-		<input type="hidden" value="" id="" name="">
+		  <!-- 이미지 삽입 -->
+	     <div class="page-header" style="margin-top: 85px;">
+		  	<h3>이미지 삽입 <small>주차장 이미지 3장이 필요합니다.</small></h3>
+    	 </div>
+	     <div class="container" style="padding: 29px 0px 5px;">
+		 <!--  <div class="fileinput-button">
+		     <input multiple="multiple" type="file" name="filename[]" />
+		   </div> -->
+		    
+		    <table class="table table-hover" style="width:70%; margin:5px auto; text-align: center;">
+		    	<THEAD>
+					<TR>
+					<TH style="text-align: center; width: 145px;">#</TH>
+					<TH>삽입 (파일명)</TH>
+					</TR>
+				</THEAD>
+				<TBODY>
+				<TR>
+				<TD>1</TD>
+				<TD><input type=file size=40 name="image" id="file1"></TD>
+				</TR>
+				<TR>
+				<TD>2</TD>
+				<TD><input type=file size=40 name="image2" id="file2"></TD>
+				</TR>
+				<TR>
+				<TD>3</TD>
+				<TD><input type=file size=40 name="image3" id="file3"></TD>
+				</TR>
+				</TBODY>
+		    </table>
+		    
+		  <!--   <table cellpadding="0" cellspacing="0" id="dynamic_table" border="1" style="width: 40%; margin: 0px auto; text-align:center; height: 120px;">
+				<tr><td width="80px" style="background:#428bca; color:white;">이미지 1</td><td style="padding-left: 10px;" width="140"><input type=file size=40 name="image" id="file1"></td></tr>
+				<tr><td width="80px" style="background:#428bca; color:white;">이미지 2</td><td style="padding-left: 10px;"><input type=file size=40 name="image2" id="file2"></td></tr>
+				<tr><td width="80px" style="background:#428bca; color:white;">이미지 3</td><td style="padding-left: 10px;"><input type=file size=40 name="image3" id="file3"></td></tr>
+			</table> -->
+		    
+		    <div id="cma_image" style="width:100%; max-width:100%; text-align: center; display:none;"></div>
+	    </div>
 		<div style="width: 400px; margin: 90px auto;">
 			<input class="btn btn-primary btn-register" type="button" value="등록하기" id="regis">
 			<!-- <input class="btn btn-primary btn-register" type="button" value="취소" id="cancel" src="javascript:history.go(-1);" > -->
@@ -354,30 +393,49 @@ $(function() {
 			return false;
 		}
 		
-		//Script 객체
-		var mapVo ={
-			"name": name,
-			"fee": fee,
-			"starttime": starttime,
-			"endtime": endtime,
-			"note": note,
-			"latitude": latitude,
-			"longitude" : longitude,
-			"address": address
-		};
+		if($("#file1")[0].files[0] == undefined){
+			sweetAlert("주차장 이미지를 첨부해주세요.","Something went wrong", "error");
+			return false;
+		}
+		
+		if($("#file2")[0].files[0] == undefined){
+			sweetAlert("주차장 이미지를 첨부해주세요.","Something went wrong", "error");
+			return false;
+		}
+		
+		if($("#file3")[0].files[0] == undefined){
+			sweetAlert("주차장 이미지를 첨부해주세요.","Something went wrong", "error");
+			return false;
+		}
+		
+		var data = new FormData();
+		
+		 data.append("name",name);
+		 data.append("fee",fee);
+		 data.append("starttime",starttime);
+		 data.append("note",note);
+		 data.append("latitude",latitude);
+		 data.append("longitude",longitude);
+		 data.append("address",address);
+		 data.append("file1",$("input[name=image]")[0].files[0]);
+		 data.append("file2",$("input[name=image2]")[0].files[0]);
+		 data.append("file3",$("input[name=image3]")[0].files[0]);
 		
 		$.ajax( {
 			url : "insert",
 			type: "POST",
-			data: JSON.stringify(mapVo),	//보냄
-			dataType: "text",
-			contentType: "application/json",
+			data: data,	//보냄
+			data : data,
+			dataType:"text",
+	 	 	enctype: "multipart/form-data", 
+			processData: false,
+		    contentType: false,
 			success: function(result){	//받아옴
 				alert('성공?');
 				if(result == "false"){
 					console.log(result);
-					alert("실패");
-					return false;s
+					location.href='/upa/map/parksuccess';
+					return false;
 				}
 				
 				 if(result == "true"){

@@ -153,7 +153,7 @@ $(function() {
 					console.log(result);
 					if(result == "false"){
 						console.log(result);
-						sweetAlert("유효하지 않는 로그인입니다.\n다시 시도해주세요..","Something went wrong", "error");
+						sweetAlert("유효하지 않는 로그인입니다.\n다시 시도해주세요.","Something went wrong", "error");
 						return false;
 					}
 					

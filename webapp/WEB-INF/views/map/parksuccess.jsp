@@ -24,11 +24,11 @@
 	<div id="back1">
 		<div class="container">
 			<div id="title1">
-				<h3>UPA 회원가입 완료</h3>
+				<h3>UPA 주차장 등록 완료</h3>
 			</div>
 			<div id ="title1_p">
-				<p>회원님, 회원가입을 축하드립니다.</p>
-				<p>저희의 회원이 되어주셔서 감사합니다. 더 나은 UPA가 되도록 노력하겠습니다.</p>
+				<p>진심으로 감사드립니다.</p>
+				<p>회원님의 손길 덕분에 저희 UPA는 공유경제 실현에 앞서겠습니다.</p>
 			</div>
 		</div>
 	</div>	
@@ -37,8 +37,8 @@
 			<div id="join-succ">
 				<div id="goLogin">
 				<ul style="padding-left:30px;">
-					<li id="line"><strong style="color:#a94242;">환영합니다.</strong></li>
-					<li id="line">회원님 회원가입이 성공적으로 완료되었습니다.</li>
+					<li id="line"><strong style="color:#a94242;">감사드립니다.</strong></li>
+					<li id="line">회원님 주차장 등록이 성공적으로 완료되었습니다.</li>
 				</ul>
 				</div>	
 			</div>

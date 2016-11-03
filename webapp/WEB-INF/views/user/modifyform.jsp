@@ -194,6 +194,27 @@ $(function() {
 				}
 			}
 			
+			//패스워드
+			regPassword = /^[a-zA-Z0-9]{8,20}$/;
+			if($("#pass").val() == ""){
+				$("#pass").focus();
+				sweetAlert("비밀번호는\n 필수 입력 항목입니다.","Something went wrong", "error");
+				return false;
+			} else{
+				if(!regPassword.test($("#pass").val())) { 
+			      $("#pass").focus(); 
+	 		   		 sweetAlert("비밀번호의 입력된 내용이\n잘못된 형식입니다.","Something went wrong", "error");
+		 	     return false; 
+				}
+			}
+			
+			//재 패스워드
+			if($("#repassword").val() == ""){
+				$("#repassword").focus();
+				sweetAlert("비밀번호 재입력은 \n필수 입력 항목입니다.","Something went wrong", "error");
+				return false;
+			}
+			
 			//패스워드 일치 여부
 			if($("#pass").val() != $("#repassword").val()){
 				$("#pass").focus();
